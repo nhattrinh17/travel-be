@@ -22,4 +22,7 @@ export const messageResponse = {
   specialOffer: {
     idInvalid: 'special_offer_invalid',
   },
+  accompaniedServiceId: {
+    idInvalid: 'accompanied_serviceId_invalid',
+  },
 };

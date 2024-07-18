@@ -11,6 +11,9 @@ export * from './cruiseSpecialOffer.model';
 export * from './packetTour.model';
 export * from './tour.model';
 export * from './tourSpecialOffer.model';
+export * from './accompaniedService.model';
+export * from './tourAccompaniedService.model';
+export * from './cruiseAccompaniedService.model';
 
 export const addConditionNotDelete = (options: any) => {
   if (!options.where) {

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { TourService } from './tour.service';
 import { CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto';
-import { UpdateTourDto } from './dto/update-tour.dto';
+import { UpdateSpecialAccompaniedService, UpdateTourDto } from './dto/update-tour.dto';
 import { Public } from '../auth/decorators';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ApiOperationCustom, BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
@@ -24,6 +24,16 @@ export class TourController {
   async updateSpecialOffer(@Body() dto: UpdateSpecialOfferTourDto) {
     try {
       return await this.tourService.updateSpecialOffer(dto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('/accompanied-service')
+  @ApiOperationCustom('Tour Accompanied Service', 'post')
+  async updateAccompaniedService(@Body() dto: UpdateSpecialAccompaniedService) {
+    try {
+      return await this.tourService.updateAccompaniedService(dto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

@@ -44,7 +44,7 @@ export class UserModel extends Model {
   @Column({ type: DataType.STRING })
   avatar: string;
 
-  @Column({ type: DataType.STRING, defaultValue: TypeUser.Tutor })
+  @Column({ type: DataType.STRING, defaultValue: TypeUser.Tourist })
   typeUser: string;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: true })

@@ -7,9 +7,10 @@ import { CruiseRepository } from './repository/cruise.repository';
 import { TypeRoomRepository } from './repository/type-room.repository';
 import { SpecialOfferModule } from '../special-offer/special-offer.module';
 import { ItinerariesModule } from '../itineraries/itineraries.module';
+import { AccompaniedServiceModule } from '../accompanied-service/accompanied-service.module';
 
 @Module({
-  imports: [ItinerariesModule, SpecialOfferModule, SequelizeModule.forFeature([CruiseModel, RoomCruiseModel])],
+  imports: [AccompaniedServiceModule, ItinerariesModule, SpecialOfferModule, SequelizeModule.forFeature([CruiseModel, RoomCruiseModel])],
   controllers: [CruiseController],
   providers: [
     CruiseService,

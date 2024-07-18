@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto';
-import { UpdateTourDto } from './dto/update-tour.dto';
+import { UpdateSpecialAccompaniedService, UpdateTourDto } from './dto/update-tour.dto';
 import { TourRepositoryInterface } from './interface/tour.interface';
 import { generateSlug } from 'src/utils';
 import { ItinerariesModel, SpecialOfferModel } from 'src/models';
@@ -10,6 +10,7 @@ import { TypeTour, messageResponse } from 'src/constants';
 import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { ItinerariesService } from '../itineraries/itineraries.service';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
+import { AccompaniedServiceService } from '../accompanied-service/accompanied-service.service';
 
 @Injectable()
 export class TourService {
@@ -18,6 +19,7 @@ export class TourService {
     private readonly tourRepository: TourRepositoryInterface,
     private readonly specialOfferService: SpecialOfferService,
     private readonly itinerariesService: ItinerariesService,
+    private readonly accompaniedServiceService: AccompaniedServiceService,
   ) {}
 
   create(dto: CreateTourDto) {
@@ -31,6 +33,13 @@ export class TourService {
       this.itinerariesService.update(dto.itinerariesId, dto);
     }
     return this.itinerariesService.create(dto);
+  }
+
+  async updateAccompaniedService(dto: UpdateSpecialAccompaniedService) {
+    const cruiseById = await this.tourRepository.findOneById(dto.tourId);
+    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const deleteOld = await this.accompaniedServiceService.deleteCruiseAccompaniedService(dto.tourId);
+    return this.accompaniedServiceService.addCruiseAccompaniedService(dto.tourId, dto.accompaniedServiceIds);
   }
 
   async updateSpecialOffer(dto: UpdateSpecialOfferTourDto) {

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
-import { UpdateCruiseDto, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
+import { UpdateCruiseDto, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
 import { CruiseRepositoryInterface } from './interface/cruise.interface';
 import { messageResponse } from 'src/constants';
 import { generateSlug } from 'src/utils';
@@ -11,6 +11,7 @@ import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { TypeRoomRepositoryInterface } from './interface/type-room.interface';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
 import { ItinerariesService } from '../itineraries/itineraries.service';
+import { AccompaniedServiceService } from '../accompanied-service/accompanied-service.service';
 
 @Injectable()
 export class CruiseService {
@@ -21,6 +22,7 @@ export class CruiseService {
     private readonly typeRoomRepository: TypeRoomRepositoryInterface,
     private readonly specialOfferService: SpecialOfferService,
     private readonly itinerariesService: ItinerariesService,
+    private readonly accompaniedServiceService: AccompaniedServiceService,
   ) {}
 
   create(dto: CreateCruiseDto) {
@@ -41,6 +43,13 @@ export class CruiseService {
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     const deleteOld = await this.specialOfferService.deleteCruiseSpecialOffer(dto.cruiseId);
     return this.specialOfferService.addCruiseSpecialOffer(dto.cruiseId, dto.specialOfferIds);
+  }
+
+  async updateAccompaniedService(dto: UpdateSpecialAccompaniedService) {
+    const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
+    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const deleteOld = await this.accompaniedServiceService.deleteCruiseAccompaniedService(dto.cruiseId);
+    return this.accompaniedServiceService.addCruiseAccompaniedService(dto.cruiseId, dto.accompaniedServiceIds);
   }
 
   async addRoomType(dto: CreateOrUpdateRoomTypeDto) {

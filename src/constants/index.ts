@@ -15,7 +15,7 @@ export const Environment = {
 };
 
 export const TypeUser = {
-  Tutor: 'Tourist',
+  Tourist: 'Tourist',
   Admin: 'Admin-CMS',
 };
 

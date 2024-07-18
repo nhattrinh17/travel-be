@@ -3,12 +3,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Public } from '../auth/decorators';
 
 @ApiTags('User')
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
