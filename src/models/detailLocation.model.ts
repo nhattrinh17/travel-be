@@ -5,7 +5,6 @@ import { DestinationModel, addConditionNotDelete } from '.';
 @Table({
   tableName: 'detailLocation',
   timestamps: true,
-  indexes: [],
 })
 export class DetailLocationModel extends Model {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
@@ -18,7 +17,6 @@ export class DetailLocationModel extends Model {
 
   @Column({
     type: DataType.STRING,
-    unique: true,
   })
   title: string;
 
@@ -33,7 +31,7 @@ export class DetailLocationModel extends Model {
   @Column({
     type: DataType.TEXT,
   })
-  image: string;
+  images: string;
 
   @ForeignKey(() => DestinationModel)
   @Column({

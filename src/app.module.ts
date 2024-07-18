@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Dialect } from 'sequelize';
 import { Environment } from './constants';
@@ -12,8 +12,16 @@ import { JwtAuthGuard } from './modules/auth/guards';
 import { PermissionGuard } from './modules/auth/guards/permission.guard';
 import { UploadModule } from './modules/upload/upload.module';
 import { FirebaseModule } from 'nestjs-firebase';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { DestinationModule } from './modules/destination/destination.module';
 import { DetailLocationModule } from './modules/detail-location/detail-location.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { join } from 'path';
+import { SpecialOfferModule } from './modules/special-offer/special-offer.module';
+import { TourModule } from './modules/tour/tour.module';
+import { CruiseModel } from './models';
+import { CruiseModule } from './modules/cruise/cruise.module';
+import { PacketTourModule } from './modules/packet-tour/packet-tour.module';
 
 @Module({
   imports: [
@@ -53,11 +61,48 @@ import { DetailLocationModule } from './modules/detail-location/detail-location.
       },
       storageBucket: process.env.STORAGE_BUCKET,
     }),
+    // Mailler
+    MailerModule.forRootAsync({
+      // imports: [ConfigModule], // import module if not enabled globally
+      useFactory: async (config: ConfigService) => ({
+        // transport: config.get("MAIL_TRANSPORT"),
+        // or
+        transport: {
+          host: process.env.MAIL_HOST,
+          port: +process.env.MAIL_PORT,
+          service: 'Gmail',
+          secure: true,
+          auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASSWORD,
+          },
+          tls: {
+            // do not fail on invalid certs
+            rejectUnauthorized: false,
+          },
+        },
+        defaults: {
+          from: `"No Reply" <${process.env.MAIL_FROM}>`,
+        },
+
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+    }),
     UsersModule,
     AuthModule,
     UploadModule,
     DestinationModule,
     DetailLocationModule,
+    PacketTourModule,
+    SpecialOfferModule,
+    TourModule,
+    CruiseModule,
   ],
   controllers: [AppController],
   providers: [

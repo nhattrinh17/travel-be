@@ -15,7 +15,7 @@ export class DetailLocationService {
   ) {}
 
   async create(dto: CreateDetailLocationDto) {
-    if (!dto.name || !dto.title || !dto.description) throw new Error(messageResponse.system.missingData);
+    if (!dto.name || !dto.title || !dto.description || !dto.images) throw new Error(messageResponse.system.missingData);
     const slug = generateSlug(`${dto.name}`);
     const checkExit = await this.DetailLocationRepository.count({ slug });
     if (checkExit) throw new Error(messageResponse.system.duplicateData);
@@ -27,7 +27,6 @@ export class DetailLocationService {
     if (search) filter.province = { [Op.like]: search };
     return this.DetailLocationRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'province', 'district', 'createdAt'],
     });
   }
 

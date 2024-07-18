@@ -4,7 +4,7 @@ import { Status, TypeUser } from 'src/constants';
 import { addConditionNotDelete } from '.';
 
 @Table({
-  tableName: 'users',
+  tableName: 'user',
   timestamps: true,
   indexes: [
     { name: 'username_index', fields: ['username'], unique: true },
@@ -22,7 +22,6 @@ export class UserModel extends Model {
 
   @Column({
     type: DataType.STRING,
-    unique: true,
   })
   username: string;
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateDestinationDto {
+export class CreatePacketTourDto {
   @ApiProperty({ name: 'name', type: String, description: 'Tên địa điểm' })
   name: string;
 

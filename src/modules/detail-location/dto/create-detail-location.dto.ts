@@ -10,6 +10,6 @@ export class CreateDetailLocationDto {
   @ApiProperty({ name: 'description', type: String, description: 'Nội dung(mô tả) hiển thị ở đầu trang' })
   description: string;
 
-  @ApiProperty({ name: 'image', type: String, description: 'Ảnh vị trí' })
-  image: string;
+  @ApiProperty({ name: 'images', type: String, description: 'Ảnh vị trí' })
+  images: string;
 }

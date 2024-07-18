@@ -3,10 +3,10 @@ import { DataType } from 'sequelize-typescript';
 import { addConditionNotDelete } from '.';
 
 @Table({
-  tableName: 'destination',
+  tableName: 'packetTour',
   timestamps: true,
 })
-export class DestinationModel extends Model {
+export class PacketTourModel extends Model {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 

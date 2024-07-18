@@ -15,8 +15,8 @@ export class DestinationService {
   ) {}
 
   async create(dto: CreateDestinationDto) {
-    if (!dto.district || !dto.province) throw new Error(messageResponse.system.missingData);
-    const slug = generateSlug(`${dto.district} ${dto.province}`);
+    if (!dto.name || !dto.title || !dto.description || !dto.images) throw new Error(messageResponse.system.missingData);
+    const slug = generateSlug(`${dto.name}`);
     const checkExit = await this.destinationRepository.count({ slug });
     if (checkExit) throw new Error(messageResponse.system.duplicateData);
     return this.destinationRepository.create({ ...dto, slug });
@@ -27,7 +27,6 @@ export class DestinationService {
     if (search) filter.province = { [Op.like]: search };
     return this.destinationRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'province', 'district', 'createdAt'],
     });
   }
 
@@ -38,7 +37,7 @@ export class DestinationService {
   async update(id: number, dto: UpdateDestinationDto) {
     const DestinationById = await this.findOne(id);
     if (!DestinationById) throw new Error(messageResponse.system.idInvalid);
-    const slug = generateSlug(`${dto.district} ${dto.province}`);
+    const slug = generateSlug(`${dto.name}`);
     const checkExit = await this.destinationRepository.count({ slug, id: { [Op.ne]: id } });
     if (checkExit) throw new Error(messageResponse.system.duplicateData);
     return this.destinationRepository.findByIdAndUpdate(id, { ...dto, slug });

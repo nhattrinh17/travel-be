@@ -26,6 +26,7 @@ export class Cluster {
   }
 
   private static getCpuCount(): number {
+    console.log('🚀 ~ Cluster ~ getCpuCount ~ process.env.WORKERS_COUNT:', process.env.WORKERS_COUNT);
     if (process.env.WORKERS_COUNT) {
       return parseInt(process.env.WORKERS_COUNT, 10);
     }

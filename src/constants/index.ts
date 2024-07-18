@@ -15,27 +15,13 @@ export const Environment = {
 };
 
 export const TypeUser = {
-  Tutor: 'Tutor',
+  Tutor: 'Tourist',
   Admin: 'Admin-CMS',
 };
 
-export const StatusClass = {
-  stillEmpty: 0, // Trống,
-  received: 1, // Đã có người nhận,
-  assignedClass: 2, // Đã giao lớp
-  cancelClass: 3, // Hủy lớp
-};
-
-export const TypeRequireClass = {
-  student: 0,
-  maleStudent: 1,
-  femaleStudent: 2,
-  lecturers: 3,
-};
-
-export const GenderStudent = {
-  Male: 0,
-  Female: 1,
+export const TypeTour = {
+  Packet: 0,
+  Daily: 1,
 };
 
 export * from './message';
