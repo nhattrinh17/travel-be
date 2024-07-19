@@ -22,11 +22,12 @@ export class DetailLocationService {
     return this.DetailLocationRepository.create({ ...dto, slug });
   }
 
-  findAll(pagination: PaginationDto, search: string) {
+  findAll(pagination: PaginationDto, idDestination: number) {
     const filter: any = {};
-    if (search) filter.province = { [Op.like]: search };
+    if (idDestination) filter.idDestination = { [Op.like]: idDestination };
     return this.DetailLocationRepository.findAll(filter, {
       ...pagination,
+      projection: ['id', 'name', 'description', 'title', 'images', 'createdAt'],
     });
   }
 

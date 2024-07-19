@@ -27,7 +27,7 @@ export class DestinationService {
     if (search) filter.province = { [Op.like]: search };
     return this.destinationRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'title', 'description', 'image', 'createdAt'],
+      projection: ['id', 'name', 'title', 'description', 'image', 'createdAt'],
     });
   }
 

@@ -12,4 +12,7 @@ export class CreateDetailLocationDto {
 
   @ApiProperty({ name: 'images', type: String, description: 'Ảnh vị trí' })
   images: string;
+
+  @ApiProperty({ name: 'destinationId', type: Number, description: 'destinationId' })
+  destinationId: number;
 }
