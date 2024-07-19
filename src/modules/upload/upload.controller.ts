@@ -1,7 +1,8 @@
-import { Controller, Post, UseInterceptors, UploadedFile, HttpException, Body } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, HttpException, Body, Req, Res, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { LocalFilesInterceptor, FirebaseService } from 'src/utils';
+import { FirebaseService } from 'src/utils';
 import { Public } from '../auth/decorators';
+import { UploadedFilesCustomer } from 'src/custom-decorator/fileUpload.decorator';
 
 // @ApiBearerAuth()
 @ApiTags('Upload')
@@ -11,37 +12,14 @@ export class UploadController {
 
   @Public()
   @Post('image')
-  @UseInterceptors(
-    LocalFilesInterceptor({
-      path: '/images',
-      fieldName: 'file',
-    }),
-  )
-  async uploadImage(@UploadedFile() file: Express.Multer.File, @Body() optionUpload: { folder: string }) {
-    if (!file) {
+  async uploadImage(@UploadedFilesCustomer() files: any[], @Query('folder') folder: string) {
+    console.log('🚀 ~ UploadController ~ files:', folder);
+    if (!files.length) {
       throw new HttpException('file not found', 500);
     }
-    const path = await this.firebaseService.uploadImageToStorage(file, optionUpload.folder || 'client');
+    const paths = await Promise.all(files.map((file) => this.firebaseService.uploadImageToStorage(file, folder || 'client')));
     return {
-      data: path,
-    };
-  }
-
-  @Public()
-  @Post('file')
-  @UseInterceptors(
-    LocalFilesInterceptor({
-      path: '/files',
-      fieldName: 'file',
-    }),
-  )
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    if (!file) {
-      throw new HttpException('file not found', 500);
-    }
-    const path = await this.firebaseService.uploadFileToStorage(file, 'client');
-    return {
-      data: path,
+      data: paths,
     };
   }
 }

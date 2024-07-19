@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AccompaniedServiceService } from './accompanied-service.service';
 import { CreateAccompaniedServiceDto } from './dto/create-accompanied-service.dto';
 import { UpdateAccompaniedServiceDto } from './dto/update-accompanied-service.dto';
+import { BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
 
 @Controller('accompanied-service')
 export class AccompaniedServiceController {
@@ -12,10 +13,11 @@ export class AccompaniedServiceController {
     return this.accompaniedServiceService.create(createAccompaniedServiceDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.accompaniedServiceService.findAll();
-  // }
+  @Get()
+  @BaseFilter()
+  findAll(@Pagination() pagination: PaginationDto) {
+    return this.accompaniedServiceService.findAll(pagination);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

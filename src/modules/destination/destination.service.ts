@@ -15,7 +15,7 @@ export class DestinationService {
   ) {}
 
   async create(dto: CreateDestinationDto) {
-    if (!dto.name || !dto.title || !dto.description || !dto.images) throw new Error(messageResponse.system.missingData);
+    if (!dto.name || !dto.title || !dto.description || !dto.image) throw new Error(messageResponse.system.missingData);
     const slug = generateSlug(`${dto.name}`);
     const checkExit = await this.destinationRepository.count({ slug });
     if (checkExit) throw new Error(messageResponse.system.duplicateData);
@@ -27,6 +27,7 @@ export class DestinationService {
     if (search) filter.province = { [Op.like]: search };
     return this.destinationRepository.findAll(filter, {
       ...pagination,
+      projection: ['id', 'title', 'description', 'image', 'createdAt'],
     });
   }
 

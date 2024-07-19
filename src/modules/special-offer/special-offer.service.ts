@@ -29,6 +29,7 @@ export class SpecialOfferService {
     if (search) filter.search = { [Op.like]: `%${search}%` };
     return this.specialOfferRepository.findAll(filter, {
       ...pagination,
+      projection: ['id', 'name', 'content', 'createdAt'],
     });
   }
 

@@ -5,6 +5,7 @@ import { TourAccompaniedServiceRepositoryInterface } from './interface/tour-acco
 import { CruiseAccompaniedServiceRepositoryInterface } from './interface/cruise-accompanied-service.interface';
 import { AccompaniedServiceRepositoryInterface } from './interface/accompanied-service.interface';
 import { messageResponse } from 'src/constants';
+import { PaginationDto } from 'src/custom-decorator';
 
 @Injectable()
 export class AccompaniedServiceService {
@@ -24,6 +25,16 @@ export class AccompaniedServiceService {
 
   findOne(id: number) {
     return this.accompaniedServiceRepository.findOneById(id);
+  }
+
+  findAll(pagination: PaginationDto) {
+    return this.accompaniedServiceRepository.findAll(
+      {},
+      {
+        ...pagination,
+        projection: ['id', 'name', 'slug', 'createdAt'],
+      },
+    );
   }
 
   async update(id: number, dto: UpdateAccompaniedServiceDto) {
