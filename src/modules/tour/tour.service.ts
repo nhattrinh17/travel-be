@@ -3,7 +3,7 @@ import { CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto'
 import { UpdateSpecialAccompaniedService, UpdateTourDto } from './dto/update-tour.dto';
 import { TourRepositoryInterface } from './interface/tour.interface';
 import { generateSlug } from 'src/utils';
-import { ItinerariesModel, SpecialOfferModel } from 'src/models';
+import { AccompaniedServiceModel, ItinerariesModel, SpecialOfferModel } from 'src/models';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
 import { TypeTour, messageResponse } from 'src/constants';
@@ -23,14 +23,14 @@ export class TourService {
   ) {}
 
   create(dto: CreateTourDto) {
-    if (!dto.packetTourId || !dto.name || !dto.contentBrief || !dto.detail || !dto.images || !dto.price) throw new Error(messageResponse.system.missingData);
+    if (!dto.name || !dto.contentBrief || !dto.detail || !dto.price) throw new Error(messageResponse.system.missingData);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime}`;
     return this.tourRepository.create({ ...dto, slug: slug, type: dto.packetTourId ? TypeTour.Packet : TypeTour.Daily });
   }
 
   addOrUpdateItinerariesTour(dto: CreateItinerariesDto) {
     if (dto.itinerariesId) {
-      this.itinerariesService.update(dto.itinerariesId, dto);
+      return this.itinerariesService.update(dto.itinerariesId, dto);
     }
     return this.itinerariesService.create(dto);
   }
@@ -38,8 +38,8 @@ export class TourService {
   async updateAccompaniedService(dto: UpdateSpecialAccompaniedService) {
     const cruiseById = await this.tourRepository.findOneById(dto.tourId);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
-    const deleteOld = await this.accompaniedServiceService.deleteCruiseAccompaniedService(dto.tourId);
-    return this.accompaniedServiceService.addCruiseAccompaniedService(dto.tourId, dto.accompaniedServiceIds);
+    const deleteOld = await this.accompaniedServiceService.deleteTourAccompaniedService(dto.tourId);
+    return this.accompaniedServiceService.addTourAccompaniedService(dto.tourId, dto.accompaniedServiceIds);
   }
 
   async updateSpecialOffer(dto: UpdateSpecialOfferTourDto) {
@@ -66,11 +66,26 @@ export class TourService {
     const filter: any = {};
     if (search) filter.name = { [Op.like]: `%${search}%` };
     if (packetTourId) filter.packetTourId = packetTourId;
-    if (typeof type == 'number') filter.type = type;
+    if (type >= 0) filter.type = type;
     return this.tourRepository.findAll(filter, {
       ...pagination,
+      projection: ['id', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       sort: sort,
       typeSort: typeSort,
+      include: [
+        {
+          //
+          model: SpecialOfferModel,
+          as: 'specialOffers',
+          attributes: ['id'],
+        },
+        {
+          model: AccompaniedServiceModel,
+          as: 'accompaniedServices',
+          attributes: ['id'],
+          // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+        },
+      ],
     });
   }
 
@@ -81,6 +96,22 @@ export class TourService {
         { model: ItinerariesModel, as: 'itineraries' },
       ],
     });
+  }
+
+  async getAllItinerariesCruise(idTour: number) {
+    return this.itinerariesService.findAll(
+      {
+        tourId: idTour,
+      },
+      {
+        limit: 100,
+        offset: 0,
+        page: 1,
+        sort: 'day',
+        typeSort: 'ASC',
+        projection: ['id', 'day', 'name', 'description', 'content'],
+      },
+    );
   }
 
   async update(id: number, dto: UpdateTourDto) {

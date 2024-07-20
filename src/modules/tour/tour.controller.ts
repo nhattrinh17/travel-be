@@ -102,6 +102,13 @@ export class TourController {
     return this.tourService.findOne(+id);
   }
 
+  @Get(':id/itineraries')
+  @BaseFilter()
+  @ApiOperationCustom('Tour itineraries', 'POST')
+  findAllItineraries(@Param('id') id: string) {
+    return this.tourService.getAllItinerariesCruise(+id);
+  }
+
   @Patch(':id')
   @ApiOperationCustom('Tour', 'patch')
   update(@Param('id') id: string, @Body() updateTourDto: UpdateTourDto) {

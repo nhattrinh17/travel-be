@@ -6,7 +6,7 @@ import { messageResponse } from 'src/constants';
 import { generateSlug } from 'src/utils';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
-import { ItinerariesModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
+import { AccompaniedServiceModel, ItinerariesModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
 import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { TypeRoomRepositoryInterface } from './interface/type-room.interface';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
@@ -33,7 +33,7 @@ export class CruiseService {
 
   addOrUpdateItinerariesTour(dto: CreateItinerariesDto) {
     if (dto.itinerariesId) {
-      this.itinerariesService.update(dto.itinerariesId, dto);
+      return this.itinerariesService.update(dto.itinerariesId, dto);
     }
     return this.itinerariesService.create(dto);
   }
@@ -65,6 +65,37 @@ export class CruiseService {
     return this.typeRoomRepository.findByIdAndUpdate(dto.roomId, dto);
   }
 
+  async getAllRoomCruise(idCruise: number) {
+    return this.typeRoomRepository.findAll(
+      {
+        cruiseId: idCruise,
+      },
+      {
+        limit: 100,
+        offset: 0,
+        page: 1,
+
+        projection: ['id', 'name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxPerson', 'amenities'],
+      },
+    );
+  }
+
+  async getAllItinerariesCruise(idCruise: number) {
+    return this.itinerariesService.findAll(
+      {
+        cruiseId: idCruise,
+      },
+      {
+        limit: 100,
+        offset: 0,
+        page: 1,
+        sort: 'day',
+        typeSort: 'ASC',
+        projection: ['id', 'day', 'name', 'description', 'content'],
+      },
+    );
+  }
+
   findAll(destinationId: number, detailLocationId: number, pagination: PaginationDto, sort: string, typeSort: string) {
     const filter: any = {};
     if (destinationId) filter.destinationId = destinationId;
@@ -73,7 +104,7 @@ export class CruiseService {
       ...pagination,
       sort: sort,
       typeSort: typeSort,
-      projection: ['name', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      projection: ['id', 'name', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       include: [{ model: SpecialOfferModel, as: 'specialOffers' }],
     });
   }
@@ -86,7 +117,22 @@ export class CruiseService {
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
+      projection: ['id', 'name', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       typeSort: typeSort,
+      include: [
+        {
+          //
+          model: SpecialOfferModel,
+          as: 'specialOffers',
+          attributes: ['id'],
+        },
+        {
+          model: AccompaniedServiceModel,
+          as: 'accompaniedServices',
+          attributes: ['id'],
+          // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+        },
+      ],
     });
   }
 

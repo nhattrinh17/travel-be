@@ -59,7 +59,7 @@ export class CruiseController {
       if (dto.roomId) {
         return await this.cruiseService.updateRoomType(dto);
       }
-      return this.cruiseService.addRoomType(dto);
+      return await this.cruiseService.addRoomType(dto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -113,6 +113,20 @@ export class CruiseController {
   @ApiOperationCustom('Cruise', 'get')
   findOne(@Param('id') id: string) {
     return this.cruiseService.findOne(+id);
+  }
+
+  @Get(':id/room')
+  @BaseFilter()
+  @ApiOperationCustom('Cruise CMS', 'POST')
+  findAllRoom(@Param('id') id: string) {
+    return this.cruiseService.getAllRoomCruise(+id);
+  }
+
+  @Get(':id/itineraries')
+  @BaseFilter()
+  @ApiOperationCustom('Cruise CMS', 'POST')
+  findAllItineraries(@Param('id') id: string) {
+    return this.cruiseService.getAllItinerariesCruise(+id);
   }
 
   @Patch(':id')

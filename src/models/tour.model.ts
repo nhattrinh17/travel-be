@@ -1,6 +1,6 @@
 import { BeforeCount, BeforeFind, BeforeSave, BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { TourSpecialOfferModel, PacketTourModel, ItinerariesModel, RoomCruiseModel, SpecialOfferModel, addConditionNotDelete } from '.';
+import { TourSpecialOfferModel, PacketTourModel, ItinerariesModel, RoomCruiseModel, SpecialOfferModel, addConditionNotDelete, AccompaniedServiceModel, TourAccompaniedServiceModel } from '.';
 import { TypeTour } from 'src/constants';
 
 @Table({
@@ -21,7 +21,7 @@ export class TourModel extends Model {
   packetTour: PacketTourModel;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.SMALLINT,
   })
   type: number;
 
@@ -70,6 +70,9 @@ export class TourModel extends Model {
 
   @BelongsToMany(() => SpecialOfferModel, () => TourSpecialOfferModel)
   specialOffers: SpecialOfferModel[];
+
+  @BelongsToMany(() => AccompaniedServiceModel, () => TourAccompaniedServiceModel)
+  accompaniedServices: AccompaniedServiceModel[];
 
   @HasMany(() => ItinerariesModel)
   itineraries: ItinerariesModel[];

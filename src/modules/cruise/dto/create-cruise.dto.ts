@@ -28,8 +28,17 @@ export class CreateCruiseDto {
   @ApiProperty({ name: 'discount', type: Number, description: 'flash sale' })
   discount: number;
 
-  @ApiProperty({ name: 'discount', type: String, description: 'flash sale' })
+  @ApiProperty({ name: 'travelerLoves', type: String, description: 'flash sale' })
   travelerLoves: string;
+
+  @ApiProperty({ name: 'totalRoom', type: Number, description: 'flash sale' })
+  totalRoom: number;
+
+  @ApiProperty({ name: 'timeLaunched', type: Number, description: 'flash sale' })
+  timeLaunched: number;
+
+  @ApiProperty({ name: 'styleCruise', type: String, description: 'flash sale' })
+  styleCruise: string;
 }
 
 export class CreateOrUpdateRoomTypeDto {

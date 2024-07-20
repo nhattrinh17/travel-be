@@ -15,7 +15,7 @@ export class PacketTourService {
   ) {}
 
   async create(dto: CreatePacketTourDto) {
-    if (!dto.name || !dto.images || !dto.title) throw new Error(messageResponse.system.missingData);
+    if (!dto.name || !dto.image || !dto.title) throw new Error(messageResponse.system.missingData);
     const slug = generateSlug(`${dto.name}`);
     const checkExit = await this.packetTourRepository.count({ slug });
     if (checkExit) throw new Error(messageResponse.system.duplicateData);
@@ -27,6 +27,7 @@ export class PacketTourService {
     if (search) filter.province = { [Op.like]: search };
     return this.packetTourRepository.findAll(filter, {
       ...pagination,
+      projection: ['id', 'name', 'image', 'title', 'createdAt'],
     });
   }
 

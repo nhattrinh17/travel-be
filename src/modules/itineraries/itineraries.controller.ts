@@ -20,12 +20,12 @@ export class ItinerariesController {
     }
   }
 
-  @Get()
-  @BaseFilter()
-  @ApiOperationCustom('Itineraries', 'get')
-  findAll(@Pagination() pagination: PaginationDto, @Query('search') search: string) {
-    return this.itinerariesService.findAll(search, pagination);
-  }
+  // @Get()
+  // @BaseFilter()
+  // @ApiOperationCustom('Itineraries', 'get')
+  // findAll(@Pagination() pagination: PaginationDto, @Query('search') search: string) {
+  //   return this.itinerariesService.findAll(search, pagination);
+  // }
 
   @Get(':id')
   @ApiOperationCustom('Itineraries', 'get', true, true)

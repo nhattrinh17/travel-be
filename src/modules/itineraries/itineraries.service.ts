@@ -18,12 +18,8 @@ export class ItinerariesService {
     return this.itinerariesRepository.create({ ...dto });
   }
 
-  findAll(search: string, pagination: PaginationDto) {
-    const filter: any = {};
-    if (search) filter.search = { [Op.like]: `%${search}%` };
-    return this.itinerariesRepository.findAll(filter, {
-      ...pagination,
-    });
+  findAll(filter: object, options: any) {
+    return this.itinerariesRepository.findAll(filter, options);
   }
 
   findOne(id: number) {

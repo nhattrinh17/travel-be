@@ -31,7 +31,7 @@ export class PacketTourModel extends Model {
   @Column({
     type: DataType.TEXT,
   })
-  images: string;
+  image: string;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isDeleted: boolean;
