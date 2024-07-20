@@ -1,6 +1,6 @@
-import { BeforeCount, BeforeFind, BeforeSave, Column, Model, Table } from 'sequelize-typescript';
+import { BeforeCount, BeforeFind, BeforeSave, Column, HasMany, Model, Table } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { addConditionNotDelete } from '.';
+import { DetailLocationModel, addConditionNotDelete } from '.';
 
 @Table({
   tableName: 'destination',
@@ -32,6 +32,9 @@ export class DestinationModel extends Model {
     type: DataType.TEXT,
   })
   image: string;
+
+  @HasMany(() => DetailLocationModel)
+  detailLocations: DetailLocationModel[];
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isDeleted: boolean;

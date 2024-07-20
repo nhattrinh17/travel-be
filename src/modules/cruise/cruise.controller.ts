@@ -109,10 +109,11 @@ export class CruiseController {
     return this.cruiseService.findAllCMS(search, destinationId, detailLocationId, pagination, sort, typeSort);
   }
 
-  @Get(':id')
+  @Get(':slug')
+  @Public()
   @ApiOperationCustom('Cruise', 'get')
-  findOne(@Param('id') id: string) {
-    return this.cruiseService.findOne(+id);
+  findOne(@Param('slug') slug: string) {
+    return this.cruiseService.findOne(slug);
   }
 
   @Get(':id/room')

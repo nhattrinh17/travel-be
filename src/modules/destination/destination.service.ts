@@ -6,6 +6,7 @@ import { messageResponse } from 'src/constants';
 import { generateSlug } from 'src/utils';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
+import { DetailLocationModel } from 'src/models';
 
 @Injectable()
 export class DestinationService {
@@ -22,12 +23,22 @@ export class DestinationService {
     return this.destinationRepository.create({ ...dto, slug });
   }
 
-  findAll(pagination: PaginationDto, search: string) {
+  findAll(pagination: PaginationDto, seeDetail: string) {
     const filter: any = {};
-    if (search) filter.province = { [Op.like]: search };
+    // if (search) filter.province = { [Op.like]: search };
     return this.destinationRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'name', 'title', 'description', 'image', 'createdAt'],
+      projection: ['id', 'name', 'title', 'description', 'slug', 'image', 'createdAt'],
+      include: seeDetail
+        ? [
+            {
+              //
+              model: DetailLocationModel,
+              as: 'detailLocations',
+              attributes: ['name', 'slug', 'id', 'description', 'images', 'title'],
+            },
+          ]
+        : [],
     });
   }
 

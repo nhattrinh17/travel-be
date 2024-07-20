@@ -17,10 +17,11 @@ export abstract class BaseRepositoryAbstract<T extends Model> implements BaseRep
     return item?.deletedAt ? null : (item as T);
   }
 
-  async findOneByCondition(condition?: object, projection?: string[]): Promise<T> {
+  async findOneByCondition(condition?: object, projection?: string[], options?: object): Promise<T> {
     return await this.model.findOne({
       where: condition as WhereOptions,
       attributes: projection,
+      ...options,
     });
   }
 

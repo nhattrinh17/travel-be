@@ -5,7 +5,7 @@ export interface BaseRepositoryInterface<T> {
 
   findOneById(id: number, projection?: string[], option?: object): Promise<T | null>;
 
-  findOneByCondition(condition?: object, projection?: string[]): Promise<T>;
+  findOneByCondition(condition?: object, projection?: string[], option?: object): Promise<T>;
 
   findAll(
     condition: object,

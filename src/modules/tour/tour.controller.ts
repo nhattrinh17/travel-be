@@ -50,7 +50,6 @@ export class TourController {
   }
 
   @Get()
-  @Public()
   @ApiQuery({
     name: 'packetTourId',
     type: Number,
@@ -60,6 +59,7 @@ export class TourController {
     type: Number,
   })
   @BaseFilter()
+  @Public()
   @ApiOperationCustom('Tour ', 'GET')
   findAll(
     //
@@ -72,8 +72,13 @@ export class TourController {
     return this.tourService.findAll(packetTourId, type, pagination, sort, typeSort);
   }
 
-  @Get('cms')
+  @Get('/nav')
   @Public()
+  findAllNav() {
+    return this.tourService.findAllTourNav();
+  }
+
+  @Get('cms')
   @ApiQuery({
     name: 'search',
     type: String,
@@ -96,10 +101,11 @@ export class TourController {
     return this.tourService.findAllCMS(search, packetTourId, type, pagination, sort, typeSort);
   }
 
-  @Get(':id')
+  @Get(':slug')
+  @Public()
   @ApiOperationCustom('Tour', 'get')
-  findOne(@Param('id') id: string) {
-    return this.tourService.findOne(+id);
+  findOne(@Param('slug') slug: string) {
+    return this.tourService.findOne(slug);
   }
 
   @Get(':id/itineraries')

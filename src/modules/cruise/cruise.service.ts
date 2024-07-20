@@ -27,7 +27,7 @@ export class CruiseService {
 
   create(dto: CreateCruiseDto) {
     if (!dto.destinationId || !dto.detailLocationId || !dto.name || !dto.contentBrief || !dto.detail || !dto.images || !dto.price) throw new Error(messageResponse.system.missingData);
-    const slug = `${generateSlug(dto.name)}_${new Date().getTime}`;
+    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
     return this.cruiseRepository.create({ ...dto, slug: slug });
   }
 
@@ -105,7 +105,10 @@ export class CruiseService {
       sort: sort,
       typeSort: typeSort,
       projection: ['id', 'name', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
-      include: [{ model: SpecialOfferModel, as: 'specialOffers' }],
+      include: [
+        { model: SpecialOfferModel, as: 'specialOffers', attributes: ['name', 'content'] },
+        { model: AccompaniedServiceModel, as: 'accompaniedServices', attributes: ['name', 'slug'] },
+      ],
     });
   }
 
@@ -136,20 +139,44 @@ export class CruiseService {
     });
   }
 
-  findOne(id: number) {
-    return this.cruiseRepository.findOneById(id, ['name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'], {
-      include: [
-        { model: SpecialOfferModel, as: 'specialOffers' },
-        { model: RoomCruiseModel, as: 'roomCruises' },
-        { model: ItinerariesModel, as: 'itineraries' },
-      ],
-    });
+  findOne(slug: string) {
+    return this.cruiseRepository.findOneByCondition(
+      {
+        slug: slug,
+      },
+      ['id', 'name', 'destinationId', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      {
+        include: [
+          {
+            model: SpecialOfferModel,
+            as: 'specialOffers',
+            attributes: ['name', 'content'],
+          },
+          {
+            model: AccompaniedServiceModel,
+            as: 'accompaniedServices',
+            attributes: ['name', 'slug'],
+          },
+          {
+            model: RoomCruiseModel,
+            as: 'roomCruises',
+            attributes: ['name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxPerson', 'amenities'],
+          },
+          {
+            model: ItinerariesModel,
+            as: 'itineraries',
+            attributes: ['name', 'day', 'description', 'content'],
+          },
+        ],
+      },
+    );
   }
 
   async update(id: number, dto: UpdateCruiseDto) {
     const cruiseById = await this.cruiseRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
-    return this.cruiseRepository.findByIdAndUpdate(id, dto);
+    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    return this.cruiseRepository.findByIdAndUpdate(id, { ...dto, slug });
   }
 
   async remove(id: number) {

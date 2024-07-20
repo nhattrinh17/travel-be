@@ -24,7 +24,7 @@ export class TourService {
 
   create(dto: CreateTourDto) {
     if (!dto.name || !dto.contentBrief || !dto.detail || !dto.price) throw new Error(messageResponse.system.missingData);
-    const slug = `${generateSlug(dto.name)}_${new Date().getTime}`;
+    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
     return this.tourRepository.create({ ...dto, slug: slug, type: dto.packetTourId ? TypeTour.Packet : TypeTour.Daily });
   }
 
@@ -50,16 +50,37 @@ export class TourService {
   }
 
   findAll(packetTourId: number, type: number, pagination: PaginationDto, sort: string, typeSort: string) {
-    const filter: any = {};
+    const filter: any = {
+      type: TypeTour.Packet,
+    };
     if (packetTourId) filter.packetTourId = packetTourId;
-    if (typeof type == 'number') filter.type = type;
+
     return this.tourRepository.findAll(filter, {
       ...pagination,
       sort: sort,
       typeSort: typeSort,
       projection: ['name', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
-      include: [{ model: SpecialOfferModel, as: 'specialOffers' }],
+      include: [
+        { model: SpecialOfferModel, as: 'specialOffers', attributes: ['name', 'content'] },
+        { model: AccompaniedServiceModel, as: 'accompaniedServices', attributes: ['name', 'slug'] },
+      ],
     });
+  }
+
+  findAllTourNav() {
+    return this.tourRepository.findAll(
+      {
+        type: TypeTour.Daily,
+      },
+      {
+        limit: 20,
+        offset: 0,
+        page: 1,
+        sort: 'isFlashSale',
+        typeSort: 'DESC',
+        projection: ['name', 'slug', 'images', 'createdAt'],
+      },
+    );
   }
 
   findAllCMS(search: string, packetTourId: number, type: number, pagination: PaginationDto, sort: string, typeSort: string) {
@@ -89,13 +110,32 @@ export class TourService {
     });
   }
 
-  findOne(id: number) {
-    return this.tourRepository.findOneById(id, ['name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'], {
-      include: [
-        { model: SpecialOfferModel, as: 'specialOffers' },
-        { model: ItinerariesModel, as: 'itineraries' },
-      ],
-    });
+  findOne(slug: string) {
+    return this.tourRepository.findOneByCondition(
+      {
+        slug: slug,
+      },
+      ['id', 'name', 'packetTourId', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      {
+        include: [
+          {
+            model: SpecialOfferModel,
+            as: 'specialOffers',
+            attributes: ['name', 'content'],
+          },
+          {
+            model: AccompaniedServiceModel,
+            as: 'accompaniedServices',
+            attributes: ['name', 'slug'],
+          },
+          {
+            model: ItinerariesModel,
+            as: 'itineraries',
+            attributes: ['name', 'day', 'description', 'content'],
+          },
+        ],
+      },
+    );
   }
 
   async getAllItinerariesCruise(idTour: number) {
@@ -117,7 +157,8 @@ export class TourService {
   async update(id: number, dto: UpdateTourDto) {
     const cruiseById = await this.tourRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
-    return this.tourRepository.findByIdAndUpdate(id, dto);
+    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    return this.tourRepository.findByIdAndUpdate(id, { ...dto, slug });
   }
 
   async remove(id: number) {

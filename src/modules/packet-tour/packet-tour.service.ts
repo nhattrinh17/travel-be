@@ -27,7 +27,7 @@ export class PacketTourService {
     if (search) filter.province = { [Op.like]: search };
     return this.packetTourRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'name', 'image', 'title', 'createdAt'],
+      projection: ['id', 'slug', 'name', 'image', 'title', 'description', 'createdAt'],
     });
   }
 
