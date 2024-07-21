@@ -8,9 +8,10 @@ import { TypeRoomRepository } from './repository/type-room.repository';
 import { SpecialOfferModule } from '../special-offer/special-offer.module';
 import { ItinerariesModule } from '../itineraries/itineraries.module';
 import { AccompaniedServiceModule } from '../accompanied-service/accompanied-service.module';
+import { ServiceBookingModule } from '../service-booking/service-booking.module';
 
 @Module({
-  imports: [AccompaniedServiceModule, ItinerariesModule, SpecialOfferModule, SequelizeModule.forFeature([CruiseModel, RoomCruiseModel])],
+  imports: [ServiceBookingModule, AccompaniedServiceModule, ItinerariesModule, SpecialOfferModule, SequelizeModule.forFeature([CruiseModel, RoomCruiseModel])],
   controllers: [CruiseController],
   providers: [
     CruiseService,

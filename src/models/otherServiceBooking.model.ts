@@ -21,6 +21,11 @@ export class OtherServiceBookingModel extends Model {
   description: string;
 
   @Column({
+    type: DataType.STRING,
+  })
+  options: string;
+
+  @Column({
     type: DataType.SMALLINT,
   })
   type: number;

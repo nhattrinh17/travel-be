@@ -1,17 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
-import { UpdateCruiseDto, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
+import { UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
 import { CruiseRepositoryInterface } from './interface/cruise.interface';
 import { messageResponse } from 'src/constants';
 import { generateSlug } from 'src/utils';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
-import { AccompaniedServiceModel, ItinerariesModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
+import { AccompaniedServiceModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
 import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { TypeRoomRepositoryInterface } from './interface/type-room.interface';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
 import { ItinerariesService } from '../itineraries/itineraries.service';
 import { AccompaniedServiceService } from '../accompanied-service/accompanied-service.service';
+import { ServiceBookingService } from '../service-booking/service-booking.service';
 
 @Injectable()
 export class CruiseService {
@@ -23,6 +24,7 @@ export class CruiseService {
     private readonly specialOfferService: SpecialOfferService,
     private readonly itinerariesService: ItinerariesService,
     private readonly accompaniedServiceService: AccompaniedServiceService,
+    private readonly serviceBookingService: ServiceBookingService,
   ) {}
 
   create(dto: CreateCruiseDto) {
@@ -50,6 +52,13 @@ export class CruiseService {
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     const deleteOld = await this.accompaniedServiceService.deleteCruiseAccompaniedService(dto.cruiseId);
     return this.accompaniedServiceService.addCruiseAccompaniedService(dto.cruiseId, dto.accompaniedServiceIds);
+  }
+
+  async updateOtherBookingService(dto: UpdateOtherBookingService) {
+    const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
+    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const deleteOld = await this.serviceBookingService.deleteCruiseServiceBooking(dto.cruiseId);
+    return this.serviceBookingService.addCruiseServiceBooking(dto.cruiseId, dto.otherServices);
   }
 
   async addRoomType(dto: CreateOrUpdateRoomTypeDto) {
@@ -120,7 +129,7 @@ export class CruiseService {
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
-      projection: ['id', 'name', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      projection: ['id', 'name', 'destinationId', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       typeSort: typeSort,
       include: [
         {
@@ -132,6 +141,12 @@ export class CruiseService {
         {
           model: AccompaniedServiceModel,
           as: 'accompaniedServices',
+          attributes: ['id'],
+          // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+        },
+        {
+          model: OtherServiceBookingModel,
+          as: 'otherServiceBookings',
           attributes: ['id'],
           // Chỉ lấy ra các trường cần thiết từ bảng trung gian
         },
@@ -156,6 +171,11 @@ export class CruiseService {
             model: AccompaniedServiceModel,
             as: 'accompaniedServices',
             attributes: ['name', 'slug'],
+          },
+          {
+            model: OtherServiceBookingModel,
+            as: 'otherServiceBookings',
+            attributes: ['name', 'description', 'options', 'type'],
           },
           {
             model: RoomCruiseModel,

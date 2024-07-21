@@ -12,7 +12,7 @@ export class ServiceBookingService {
     @Inject('OtherServiceBookingRepositoryInterface')
     private readonly otherServiceBookingRepository: OtherServiceBookingRepositoryInterface,
     @Inject('CruiseOtherServiceBookingRepositoryInterface')
-    private readonly CruiseOtherServiceBookingRepository: CruiseOtherServiceBookingRepositoryInterface,
+    private readonly cruiseOtherServiceBookingRepository: CruiseOtherServiceBookingRepositoryInterface,
   ) {}
 
   create(dto: CreateServiceBookingDto) {
@@ -29,7 +29,7 @@ export class ServiceBookingService {
       {},
       {
         ...pagination,
-        projection: ['id', 'name', 'type', 'description', 'createdAt'],
+        projection: ['id', 'name', 'type', 'description', 'options', 'createdAt'],
       },
     );
   }
@@ -42,19 +42,19 @@ export class ServiceBookingService {
   }
 
   deleteCruiseServiceBooking(cruiseId: number) {
-    return this.CruiseOtherServiceBookingRepository.permanentlyDeleteByCondition({
+    return this.cruiseOtherServiceBookingRepository.permanentlyDeleteByCondition({
       cruiseId,
     });
   }
 
-  async addCruiseServiceBooking(cruiseId: number, ServiceBookingIds: number[]) {
-    const checkSpecialOff = await Promise.all(ServiceBookingIds.map((id) => this.findOne(id)));
+  async addCruiseServiceBooking(cruiseId: number, serviceBookingIds: number[]) {
+    const checkSpecialOff = await Promise.all(serviceBookingIds.map((id) => this.findOne(id)));
     if (checkSpecialOff.includes(null)) throw Error(messageResponse.system.idInvalid);
     return Promise.all(
-      ServiceBookingIds.map((id) =>
-        this.CruiseOtherServiceBookingRepository.create({
+      serviceBookingIds.map((id) =>
+        this.cruiseOtherServiceBookingRepository.create({
           cruiseId,
-          ServiceBookingId: id,
+          otherServiceBookingId: id,
         }),
       ),
     );
