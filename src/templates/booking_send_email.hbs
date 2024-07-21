@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #333333;
+        }
+        .info, .booking-details, .footer {
+            margin-bottom: 20px;
+        }
+        .info p, .booking-details p, .footer p {
+            font-size: 16px;
+            color: #555555;
+            margin: 5px 0;
+        }
+        .booking-details h2 {
+            font-size: 20px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BLOBAL Travel</h1>
+        </div>
+        <div class="info">
+            <p><strong>Name:</strong> {{name}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Phone:</strong> {{phone}}</p>
+            <p><strong>Country:</strong> {{country}}</p>
+            <p><strong>Date:</strong> {{date}}</p>
+        </div>
+        <div class="booking-details">
+            <h2>{{cruiseName}}</h2>
+            <p><strong>Number of Itineraries:</strong> {{typeItineraries}}</p>
+            <p><strong>Total Rooms:</strong> {{totalRoom}}</p>
+            <p><strong>Total Adults:</strong> {{totalAdult}}</p>
+            <p><strong>Total Children:</strong> {{totalChildren}}</p>
+        </div>
+        <div class="footer">
+            <p>Hotline: 003343682463</p>
+            <p>Email: <a href="mailto:demo@gmail.com">demo@gmail.com</a></p>
+            <p>Website: <a href="http://www.abc.com">www.abc.com</a></p>
+        </div>
+    </div>
+</body>
+</html>

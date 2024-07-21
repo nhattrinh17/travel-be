@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { CruiseService } from './cruise.service';
-import { CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
+import { BookingCruiseDto, CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
 import { UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
 import { ApiOperationCustom, BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -17,6 +17,17 @@ export class CruiseController {
   async create(@Body() createCruiseDto: CreateCruiseDto) {
     try {
       return await this.cruiseService.create(createCruiseDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('booking')
+  @Public()
+  @ApiOperationCustom('Cruise', 'POST')
+  async booKingCruise(@Body() dto: BookingCruiseDto) {
+    try {
+      return await this.cruiseService.booking(dto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -92,7 +103,6 @@ export class CruiseController {
   }
 
   @Get('cms')
-  @Public()
   @ApiQuery({
     name: 'search',
     type: String,
@@ -117,6 +127,21 @@ export class CruiseController {
   @ApiOperationCustom('Cruise CMS', 'POST')
   findAllCMS(@Pagination() pagination: PaginationDto, @Query('search') search: string, @Query('destinationId') destinationId: number, @Query('detailLocationId') detailLocationId: number, @Query('sort') sort: string, @Query('typeSort') typeSort: string) {
     return this.cruiseService.findAllCMS(search, destinationId, detailLocationId, pagination, sort, typeSort);
+  }
+
+  @Get('booking')
+  @ApiQuery({
+    name: 'sort',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'typeSort',
+    type: String,
+  })
+  @BaseFilter()
+  @ApiOperationCustom('Cruise CMS', 'POST')
+  findAllBooking(@Pagination() pagination: PaginationDto, @Query('sort') sort: string, @Query('typeSort') typeSort: string) {
+    return this.cruiseService.findAllBookingCruise(pagination, sort, typeSort);
   }
 
   @Get(':slug')

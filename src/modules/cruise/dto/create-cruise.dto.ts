@@ -84,3 +84,71 @@ export class CreateOrUpdateRoomTypeDto {
   @ApiProperty({ name: 'amenities', type: String, description: 'TIện ích' })
   amenities: string;
 }
+
+export class DataRoomSelect {
+  indexRoom: number;
+  nameRoom: string;
+  price: number;
+  adult: number;
+  child: number;
+  infant: number;
+  typeBed: string;
+}
+
+export class OtherService {
+  name: string;
+  adult: number;
+  child: number;
+  infant: number;
+  time: string;
+}
+
+export class DataTransfer {
+  name: string;
+  address: string;
+  options: string;
+}
+
+export class BookingCruiseDto {
+  @ApiProperty({ name: 'cruiseId', type: Number, description: 'Cruise' })
+  cruiseId: number;
+
+  @ApiProperty({ name: 'fullName', type: String, description: 'Cruise' })
+  fullName: string;
+
+  @ApiProperty({ name: 'country', type: String, description: 'Cruise' })
+  country: string;
+
+  @ApiProperty({ name: 'email', type: String, description: 'Cruise' })
+  email: string;
+
+  @ApiProperty({ name: 'phone', type: String, description: 'Cruise' })
+  phone: string;
+
+  @ApiProperty({ name: 'typeItineraries', type: String, description: 'Cruise' })
+  typeItineraries: string;
+
+  @ApiProperty({ name: 'date', type: String, description: 'Cruise' })
+  date: string;
+
+  @ApiProperty({ name: 'totalRoom', type: Number, description: 'Cruise' })
+  totalRoom: number;
+
+  @ApiProperty({ name: 'totalAdult', type: Number, description: 'Cruise' })
+  totalAdult: number;
+
+  @ApiProperty({ name: 'totalChildren', type: Number, description: 'Cruise' })
+  totalChildren: number;
+
+  @ApiProperty({ name: 'otherRequest', type: String, description: 'Cruise' })
+  otherRequest: string;
+
+  @ApiProperty({ name: 'dataRoomSelect', type: [DataRoomSelect], description: 'Cruise' })
+  dataRoomSelect: DataRoomSelect[];
+
+  @ApiProperty({ name: 'otherServices', type: [OtherService], description: 'Cruise' })
+  otherServices: OtherService[];
+
+  @ApiProperty({ name: 'dataTransfer', type: DataTransfer, description: 'Cruise' })
+  dataTransfer: DataTransfer;
+}

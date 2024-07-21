@@ -1,18 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
+import { BookingCruiseDto, CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
 import { UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
 import { CruiseRepositoryInterface } from './interface/cruise.interface';
 import { messageResponse } from 'src/constants';
 import { generateSlug } from 'src/utils';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
-import { AccompaniedServiceModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
+import { AccompaniedServiceModel, CruiseModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
 import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { TypeRoomRepositoryInterface } from './interface/type-room.interface';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
 import { ItinerariesService } from '../itineraries/itineraries.service';
 import { AccompaniedServiceService } from '../accompanied-service/accompanied-service.service';
 import { ServiceBookingService } from '../service-booking/service-booking.service';
+import { generateBookingCruiseHTML } from 'src/utils/converDataHtml';
+import { BookingCruiseRepositoryInterface } from './interface/booking.interface';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class CruiseService {
@@ -21,6 +24,8 @@ export class CruiseService {
     private readonly cruiseRepository: CruiseRepositoryInterface,
     @Inject('TypeRoomRepositoryInterface')
     private readonly typeRoomRepository: TypeRoomRepositoryInterface,
+    @Inject('BookingCruiseRepositoryInterface')
+    private readonly bookingCruiseRepository: BookingCruiseRepositoryInterface,
     private readonly specialOfferService: SpecialOfferService,
     private readonly itinerariesService: ItinerariesService,
     private readonly accompaniedServiceService: AccompaniedServiceService,
@@ -31,6 +36,15 @@ export class CruiseService {
     if (!dto.destinationId || !dto.detailLocationId || !dto.name || !dto.contentBrief || !dto.detail || !dto.images || !dto.price) throw new Error(messageResponse.system.missingData);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
     return this.cruiseRepository.create({ ...dto, slug: slug });
+  }
+
+  booking(dto: BookingCruiseDto) {
+    if (!dto.cruiseId || !dto.dataRoomSelect.length || !dto.email) throw new Error(messageResponse.system.missingData);
+    const detail = generateBookingCruiseHTML(dto);
+    return this.bookingCruiseRepository.create({
+      ...dto,
+      detail,
+    });
   }
 
   addOrUpdateItinerariesTour(dto: CreateItinerariesDto) {
@@ -149,6 +163,25 @@ export class CruiseService {
           as: 'otherServiceBookings',
           attributes: ['id'],
           // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+        },
+      ],
+    });
+  }
+
+  findAllBookingCruise(pagination: PaginationDto, sort: string, typeSort: string) {
+    const filter: any = {};
+
+    return this.bookingCruiseRepository.findAll(filter, {
+      ...pagination,
+      sort: sort,
+      projection: ['id', 'typeItineraries', 'date', 'totalRoom', 'fullName', 'email', 'phone', 'totalAdult', 'totalChildren', 'country', 'detail'],
+      typeSort: typeSort,
+      include: [
+        {
+          //
+          model: CruiseModel,
+          as: 'cruise',
+          attributes: ['name'],
         },
       ],
     });
