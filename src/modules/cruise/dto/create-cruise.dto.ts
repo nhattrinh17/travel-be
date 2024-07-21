@@ -75,8 +75,11 @@ export class CreateOrUpdateRoomTypeDto {
   @ApiProperty({ name: 'content', type: String, description: 'Dịch vụ đặc biệt' })
   content: string;
 
-  @ApiProperty({ name: 'maxPerson', type: Number, description: 'Số người tối đa' })
-  maxPerson: number;
+  @ApiProperty({ name: 'maxAdult', type: Number, description: 'Số người lớn tối đa' })
+  maxAdult: number;
+
+  @ApiProperty({ name: 'maxChildren', type: Number, description: 'Số trẻ em tối đa' })
+  maxChildren: number;
 
   @ApiProperty({ name: 'amenities', type: String, description: 'TIện ích' })
   amenities: string;

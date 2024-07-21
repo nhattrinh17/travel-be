@@ -70,9 +70,14 @@ export class RoomCruiseModel extends Model {
   content: string;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.SMALLINT,
   })
-  maxPerson: number;
+  maxAdult: number;
+
+  @Column({
+    type: DataType.SMALLINT,
+  })
+  maxChildren: number;
 
   @Column({
     type: DataType.STRING,

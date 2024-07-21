@@ -53,7 +53,7 @@ export class CruiseService {
   }
 
   async addRoomType(dto: CreateOrUpdateRoomTypeDto) {
-    if (!dto.name || !dto.price || !dto.totalRooms || !dto.typeBed || !dto.acreage || !dto.maxPerson) throw new Error(messageResponse.system.missingData);
+    if (!dto.name || !dto.price || !dto.totalRooms || !dto.typeBed || !dto.acreage || !dto.maxAdult) throw new Error(messageResponse.system.missingData);
     const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     return this.typeRoomRepository.create(dto);
@@ -75,7 +75,7 @@ export class CruiseService {
         offset: 0,
         page: 1,
 
-        projection: ['id', 'name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxPerson', 'amenities'],
+        projection: ['id', 'name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
       },
     );
   }
@@ -160,7 +160,7 @@ export class CruiseService {
           {
             model: RoomCruiseModel,
             as: 'roomCruises',
-            attributes: ['name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxPerson', 'amenities'],
+            attributes: ['name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
           },
           {
             model: ItinerariesModel,
