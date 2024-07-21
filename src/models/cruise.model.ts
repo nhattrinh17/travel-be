@@ -1,6 +1,6 @@
 import { BeforeCount, BeforeFind, BeforeSave, BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { AccompaniedServiceModel, CruiseAccompaniedServiceModel, CruiseSpecialOfferModel, DestinationModel, DetailLocationModel, ItinerariesModel, RoomCruiseModel, SpecialOfferModel, addConditionNotDelete } from '.';
+import { AccompaniedServiceModel, CruiseAccompaniedServiceModel, CruiseOtherServiceBookingModel, CruiseSpecialOfferModel, DestinationModel, DetailLocationModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel, addConditionNotDelete } from '.';
 
 @Table({
   tableName: 'cruise',
@@ -91,6 +91,9 @@ export class CruiseModel extends Model {
 
   @BelongsToMany(() => AccompaniedServiceModel, () => CruiseAccompaniedServiceModel)
   accompaniedServices: AccompaniedServiceModel[];
+
+  @BelongsToMany(() => OtherServiceBookingModel, () => CruiseOtherServiceBookingModel)
+  otherServiceBookings: OtherServiceBookingModel[];
 
   @HasMany(() => RoomCruiseModel)
   roomCruises: RoomCruiseModel[];
