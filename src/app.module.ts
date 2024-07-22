@@ -23,6 +23,7 @@ import { CruiseModel } from './models';
 import { CruiseModule } from './modules/cruise/cruise.module';
 import { PacketTourModule } from './modules/packet-tour/packet-tour.module';
 import { ServiceBookingModule } from './modules/service-booking/service-booking.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -105,6 +106,7 @@ import { ServiceBookingModule } from './modules/service-booking/service-booking.
     TourModule,
     CruiseModule,
     ServiceBookingModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [

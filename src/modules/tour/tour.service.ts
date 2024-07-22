@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto';
+import { BookingTourDto, CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto';
 import { UpdateSpecialAccompaniedService, UpdateTourDto } from './dto/update-tour.dto';
 import { TourRepositoryInterface } from './interface/tour.interface';
 import { generateSlug } from 'src/utils';
-import { AccompaniedServiceModel, ItinerariesModel, SpecialOfferModel } from 'src/models';
+import { AccompaniedServiceModel, ItinerariesModel, SpecialOfferModel, TourModel } from 'src/models';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
 import { TypeTour, messageResponse } from 'src/constants';
@@ -11,21 +11,48 @@ import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { ItinerariesService } from '../itineraries/itineraries.service';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
 import { AccompaniedServiceService } from '../accompanied-service/accompanied-service.service';
+import { BookingTourRepositoryInterface } from './interface/booking.interface';
+import { SendMailService } from 'src/send-mail/send-mail.service';
+import { generateBookingTourHtml } from 'src/utils/converDataHtml';
+import { SendEmailCustomDto } from 'src/send-mail/send-mail.entity';
 
 @Injectable()
 export class TourService {
   constructor(
     @Inject('TourRepositoryInterface')
     private readonly tourRepository: TourRepositoryInterface,
+    @Inject('BookingTourRepositoryInterface')
+    private readonly bookingTourRepository: BookingTourRepositoryInterface,
     private readonly specialOfferService: SpecialOfferService,
     private readonly itinerariesService: ItinerariesService,
     private readonly accompaniedServiceService: AccompaniedServiceService,
+    private readonly sendMailService: SendMailService,
   ) {}
 
   create(dto: CreateTourDto) {
     if (!dto.name || !dto.contentBrief || !dto.detail || !dto.price) throw new Error(messageResponse.system.missingData);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
     return this.tourRepository.create({ ...dto, slug: slug, type: dto.packetTourId ? TypeTour.Packet : TypeTour.Daily });
+  }
+
+  async booking(dto: BookingTourDto) {
+    if (!dto.tourId || !dto.email) throw new Error(messageResponse.system.missingData);
+    const cruiseById = await this.tourRepository.findOneById(dto.tourId);
+    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const detail = generateBookingTourHtml(dto);
+    this.sendMailService.sendMailBookingTour({
+      ...dto,
+      tourName: cruiseById.name,
+      sendTo: process.env.MAIL_TO_DEFAULT,
+    });
+    return this.bookingTourRepository.create({
+      ...dto,
+      detail,
+    });
+  }
+
+  async contactCustomer(dto: SendEmailCustomDto) {
+    return this.sendMailService.sendEmailCustom(dto);
   }
 
   addOrUpdateItinerariesTour(dto: CreateItinerariesDto) {
@@ -53,6 +80,7 @@ export class TourService {
     const filter: any = {
       type: TypeTour.Packet,
     };
+    if (type) filter.type = type;
     if (packetTourId) filter.packetTourId = packetTourId;
 
     return this.tourRepository.findAll(filter, {
@@ -105,6 +133,25 @@ export class TourService {
           as: 'accompaniedServices',
           attributes: ['id'],
           // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+        },
+      ],
+    });
+  }
+
+  findAllBookingTour(pagination: PaginationDto, sort: string, typeSort: string) {
+    const filter: any = {};
+
+    return this.bookingTourRepository.findAll(filter, {
+      ...pagination,
+      sort: sort,
+      projection: ['id', 'date', 'quantity', 'fullName', 'email', 'phone', 'country', 'detail'],
+      typeSort: typeSort,
+      include: [
+        {
+          //
+          model: TourModel,
+          as: 'tour',
+          attributes: ['name'],
         },
       ],
     });

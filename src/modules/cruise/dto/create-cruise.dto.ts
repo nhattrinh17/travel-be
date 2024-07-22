@@ -99,6 +99,7 @@ export class OtherService {
   name: string;
   adult: number;
   child: number;
+  description: number;
   infant: number;
   time: string;
 }

@@ -6,6 +6,7 @@ import { ApiOperationCustom, BaseFilter, Pagination, PaginationDto } from 'src/c
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/decorators';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
+import { SendEmailCustomDto } from 'src/send-mail/send-mail.entity';
 
 @ApiTags('Cruise')
 @Controller('cruise')
@@ -28,6 +29,17 @@ export class CruiseController {
   async booKingCruise(@Body() dto: BookingCruiseDto) {
     try {
       return await this.cruiseService.booking(dto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('contact')
+  @Public()
+  @ApiOperationCustom('Cruise', 'POST')
+  async ContactCustomer(@Body() dto: SendEmailCustomDto) {
+    try {
+      return await this.cruiseService.contactCustomer(dto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

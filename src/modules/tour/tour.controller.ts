@@ -1,12 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { TourService } from './tour.service';
-import { CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto';
+import { BookingTourDto, CreateTourDto, UpdateSpecialOfferTourDto } from './dto/create-tour.dto';
 import { UpdateSpecialAccompaniedService, UpdateTourDto } from './dto/update-tour.dto';
 import { Public } from '../auth/decorators';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ApiOperationCustom, BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
 import { ItinerariesService } from '../itineraries/itineraries.service';
+import { SendEmailCustomDto } from 'src/send-mail/send-mail.entity';
 
 @ApiTags('Tour')
 @Controller('tour')
@@ -17,6 +18,28 @@ export class TourController {
   @ApiOperationCustom('Tour', 'post')
   create(@Body() createTourDto: CreateTourDto) {
     return this.tourService.create(createTourDto);
+  }
+
+  @Post('booking')
+  @Public()
+  @ApiOperationCustom('Cruise', 'POST')
+  async booKingCruise(@Body() dto: BookingTourDto) {
+    try {
+      return await this.tourService.booking(dto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('contact')
+  @Public()
+  @ApiOperationCustom('Cruise', 'POST')
+  async ContactCustomer(@Body() dto: SendEmailCustomDto) {
+    try {
+      return await this.tourService.contactCustomer(dto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Post('/special-offer')
@@ -99,6 +122,21 @@ export class TourController {
     @Query('typeSort') typeSort: string,
   ) {
     return this.tourService.findAllCMS(search, packetTourId, type, pagination, sort, typeSort);
+  }
+
+  @Get('booking')
+  @ApiQuery({
+    name: 'sort',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'typeSort',
+    type: String,
+  })
+  @BaseFilter()
+  @ApiOperationCustom('Cruise CMS', 'POST')
+  findAllBooking(@Pagination() pagination: PaginationDto, @Query('sort') sort: string, @Query('typeSort') typeSort: string) {
+    return this.tourService.findAllBookingTour(pagination, sort, typeSort);
   }
 
   @Get(':slug')

@@ -1,4 +1,5 @@
 import { BookingCruiseDto, DataRoomSelect } from 'src/modules/cruise/dto/create-cruise.dto';
+import { BookingTourDto } from 'src/modules/tour/dto/create-tour.dto';
 
 export function generateBookingCruiseHTML(booking: BookingCruiseDto): string {
   const otherServicesHTML = booking.otherServices
@@ -6,6 +7,7 @@ export function generateBookingCruiseHTML(booking: BookingCruiseDto): string {
       (service) => `
     <div class="other-service">
       <h4>${service.name}</h4>
+      <p>Detail ${service.description}</p>
       <p>Adults: ${service.adult}</p>
       <p>Children: ${service.child}</p>
       <p>Infants: ${service.infant}</p>
@@ -56,4 +58,24 @@ function generateDataRoomSelectHTML(dataRoomSelect: DataRoomSelect[]): string {
   `,
     )
     .join('');
+}
+
+export function generateBookingTourHtml(booking: BookingTourDto): string {
+  return `
+<div>
+    <h1>Booking Information</h1>
+    <p><strong>Name:</strong> ${booking.fullName}</p>
+    <p><strong>Email:</strong> ${booking.email}</p>
+    <p><strong>Phone:</strong> ${booking.phone}</p>
+    <p><strong>Country:</strong> ${booking.country}</p>
+    <p><strong>Date:</strong> ${booking.date}</p>
+    <h2>${booking.fullName}</h2>
+    <p><strong>Quantity:</strong> ${booking.quantity}</p>
+    <p><strong>Other Requests:</strong> ${booking.otherRequest}</p>
+    <h3>BLOBAL Travel</h3>
+    <p>Hotline: 003343682463</p>
+    <p>Email: demo@gmail.com</p>
+    <p>Website: <a href="http://www.abc.com">www.abc.com</a></p>
+</div>
+`;
 }

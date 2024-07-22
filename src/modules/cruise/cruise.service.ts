@@ -16,6 +16,8 @@ import { ServiceBookingService } from '../service-booking/service-booking.servic
 import { generateBookingCruiseHTML } from 'src/utils/converDataHtml';
 import { BookingCruiseRepositoryInterface } from './interface/booking.interface';
 import { UsersService } from '../users/users.service';
+import { SendMailService } from 'src/send-mail/send-mail.service';
+import { SendEmailCustomDto } from 'src/send-mail/send-mail.entity';
 
 @Injectable()
 export class CruiseService {
@@ -30,6 +32,7 @@ export class CruiseService {
     private readonly itinerariesService: ItinerariesService,
     private readonly accompaniedServiceService: AccompaniedServiceService,
     private readonly serviceBookingService: ServiceBookingService,
+    private readonly sendMailService: SendMailService,
   ) {}
 
   create(dto: CreateCruiseDto) {
@@ -38,13 +41,25 @@ export class CruiseService {
     return this.cruiseRepository.create({ ...dto, slug: slug });
   }
 
-  booking(dto: BookingCruiseDto) {
+  async booking(dto: BookingCruiseDto) {
     if (!dto.cruiseId || !dto.dataRoomSelect.length || !dto.email) throw new Error(messageResponse.system.missingData);
+    const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
+    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     const detail = generateBookingCruiseHTML(dto);
+    this.sendMailService.sendMailBookingCruise({
+      ...dto,
+      cruiseName: cruiseById.name,
+
+      sendTo: process.env.MAIL_TO_DEFAULT,
+    });
     return this.bookingCruiseRepository.create({
       ...dto,
       detail,
     });
+  }
+
+  async contactCustomer(dto: SendEmailCustomDto) {
+    return this.sendMailService.sendEmailCustom(dto);
   }
 
   addOrUpdateItinerariesTour(dto: CreateItinerariesDto) {

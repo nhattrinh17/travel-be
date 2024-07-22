@@ -10,10 +10,12 @@ import { ItinerariesModule } from '../itineraries/itineraries.module';
 import { AccompaniedServiceModule } from '../accompanied-service/accompanied-service.module';
 import { ServiceBookingModule } from '../service-booking/service-booking.module';
 import { BookingCruiseRepository } from './repository/booking.repository';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [
     //
+
     ServiceBookingModule,
     AccompaniedServiceModule,
     ItinerariesModule,
@@ -22,6 +24,7 @@ import { BookingCruiseRepository } from './repository/booking.repository';
   ],
   controllers: [CruiseController],
   providers: [
+    SendMailService,
     CruiseService,
     {
       provide: 'CruiseRepositoryInterface',

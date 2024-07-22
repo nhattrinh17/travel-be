@@ -36,3 +36,29 @@ export class UpdateSpecialOfferTourDto {
   @ApiProperty({ name: 'specialOfferIds', type: [Number], description: 'Danh sachs id specialOffer' })
   specialOfferIds: number[];
 }
+
+export class BookingTourDto {
+  @ApiProperty({ name: 'tourId', type: Number, description: 'tour' })
+  tourId: number;
+
+  @ApiProperty({ name: 'fullName', type: String, description: 'Cruise' })
+  fullName: string;
+
+  @ApiProperty({ name: 'country', type: String, description: 'Cruise' })
+  country: string;
+
+  @ApiProperty({ name: 'email', type: String, description: 'Cruise' })
+  email: string;
+
+  @ApiProperty({ name: 'phone', type: String, description: 'Cruise' })
+  phone: string;
+
+  @ApiProperty({ name: 'date', type: String, description: 'Cruise' })
+  date: string;
+
+  @ApiProperty({ name: 'quantity', type: Number, description: 'Cruise' })
+  quantity: number;
+
+  @ApiProperty({ name: 'otherRequest', type: String, description: 'Cruise' })
+  otherRequest: string;
+}
