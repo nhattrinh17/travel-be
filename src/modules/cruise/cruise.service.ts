@@ -134,8 +134,9 @@ export class CruiseService {
     );
   }
 
-  findAll(destinationId: number, detailLocationId: number, pagination: PaginationDto, sort: string, typeSort: string) {
+  findAll(search: string, destinationId: number, detailLocationId: number, pagination: PaginationDto, sort: string, typeSort: string) {
     const filter: any = {};
+    if (search) filter.name = { [Op.like]: `%${search}%` };
     if (destinationId) filter.destinationId = destinationId;
     if (detailLocationId) filter.detailLocationId = detailLocationId;
     return this.cruiseRepository.findAll(filter, {

@@ -108,10 +108,14 @@ export class CruiseController {
     name: 'detailLocationId',
     type: Number,
   })
+  @ApiQuery({
+    name: 'search',
+    type: String,
+  })
   @BaseFilter()
   @ApiOperationCustom('Cruise', 'GET')
-  findAll(@Pagination() pagination: PaginationDto, @Query('destinationId') destinationId: number, @Query('detailLocationId') detailLocationId: number, @Query('sort') sort: string, @Query('typeSort') typeSort: string) {
-    return this.cruiseService.findAll(destinationId, detailLocationId, pagination, sort, typeSort);
+  findAll(@Pagination() pagination: PaginationDto, @Query('search') search: string, @Query('destinationId') destinationId: number, @Query('detailLocationId') detailLocationId: number, @Query('sort') sort: string, @Query('typeSort') typeSort: string) {
+    return this.cruiseService.findAll(search, destinationId, detailLocationId, pagination, sort, typeSort);
   }
 
   @Get('cms')

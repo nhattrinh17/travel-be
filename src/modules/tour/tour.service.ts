@@ -76,12 +76,14 @@ export class TourService {
     return this.specialOfferService.addTourSpecialOffer(dto.tourId, dto.specialOfferIds);
   }
 
-  findAll(packetTourId: number, type: number, pagination: PaginationDto, sort: string, typeSort: string) {
-    const filter: any = {
-      type: TypeTour.Packet,
-    };
+  findAll(search: string, packetTourId: number, type: number, pagination: PaginationDto, sort: string, typeSort: string) {
+    const filter: any = {};
     if (type) filter.type = type;
-    if (packetTourId) filter.packetTourId = packetTourId;
+    if (search) filter.name = { [Op.like]: `%${search}%` };
+    if (packetTourId) {
+      filter.packetTourId = packetTourId;
+      filter.type = TypeTour.Packet;
+    }
 
     return this.tourRepository.findAll(filter, {
       ...pagination,

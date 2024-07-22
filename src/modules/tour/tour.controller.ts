@@ -91,8 +91,9 @@ export class TourController {
     @Query('type') type: number,
     @Query('sort') sort: string,
     @Query('typeSort') typeSort: string,
+    @Query('search') search: string,
   ) {
-    return this.tourService.findAll(packetTourId, type, pagination, sort, typeSort);
+    return this.tourService.findAll(search, packetTourId, type, pagination, sort, typeSort);
   }
 
   @Get('/nav')
