@@ -143,7 +143,7 @@ export class CruiseService {
       ...pagination,
       sort: sort,
       typeSort: typeSort,
-      projection: ['id', 'name', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      projection: ['id', 'name', 'totalRoom', 'reviewTripadvisor', 'linkTripadvisor', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       include: [
         { model: SpecialOfferModel, as: 'specialOffers', attributes: ['name', 'content'] },
         { model: AccompaniedServiceModel, as: 'accompaniedServices', attributes: ['name', 'slug'] },
@@ -159,7 +159,7 @@ export class CruiseService {
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
-      projection: ['id', 'name', 'destinationId', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      projection: ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       typeSort: typeSort,
       include: [
         {
@@ -208,7 +208,7 @@ export class CruiseService {
       {
         slug: slug,
       },
-      ['id', 'name', 'destinationId', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       {
         include: [
           {

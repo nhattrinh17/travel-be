@@ -22,6 +22,12 @@ export class CreateCruiseDto {
   @ApiProperty({ name: 'price', type: Number, description: 'Giá hiện tại' })
   price: number;
 
+  @ApiProperty({ name: 'linkTripadvisor', type: String, description: 'Nội dung chi tiết' })
+  linkTripadvisor: string;
+
+  @ApiProperty({ name: 'reviewTripadvisor', type: Number, description: 'Giá hiện tại' })
+  reviewTripadvisor: number;
+
   @ApiProperty({ name: 'isFlashSale', type: Boolean, description: 'flash sale' })
   isFlashSale: boolean;
 
