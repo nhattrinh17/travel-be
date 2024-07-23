@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { DetailLocationService } from './detail-location.service';
 import { DetailLocationController } from './detail-location.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { DetailLocationModel } from 'src/models';
+import { CruiseDetailLocationModel, DetailLocationModel } from 'src/models';
 import { DetailLocationRepository } from './repository/detail-location.repository';
+import { CruiseDetailLocationRepository } from './repository/cruise-detail-location.repository';
 
 @Module({
-  imports: [SequelizeModule.forFeature([DetailLocationModel])],
+  imports: [SequelizeModule.forFeature([DetailLocationModel, CruiseDetailLocationModel])],
   controllers: [DetailLocationController],
   providers: [
     DetailLocationService,
@@ -14,12 +15,20 @@ import { DetailLocationRepository } from './repository/detail-location.repositor
       provide: 'DetailLocationRepositoryInterface',
       useClass: DetailLocationRepository,
     },
+    {
+      provide: 'CruiseDetailLocationRepositoryInterface',
+      useClass: CruiseDetailLocationRepository,
+    },
   ],
   exports: [
     DetailLocationService,
     {
       provide: 'DetailLocationRepositoryInterface',
       useClass: DetailLocationRepository,
+    },
+    {
+      provide: 'CruiseDetailLocationRepositoryInterface',
+      useClass: CruiseDetailLocationRepository,
     },
   ],
 })

@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BookingCruiseDto, CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
-import { UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
+import { UpdateCruiseDetailLocation, UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
 import { CruiseRepositoryInterface } from './interface/cruise.interface';
 import { messageResponse } from 'src/constants';
 import { generateSlug } from 'src/utils';
 import { PaginationDto } from 'src/custom-decorator';
 import { Op } from 'sequelize';
-import { AccompaniedServiceModel, CruiseModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
+import { AccompaniedServiceModel, CruiseDetailLocationModel, CruiseModel, DetailLocationModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel } from 'src/models';
 import { SpecialOfferService } from '../special-offer/special-offer.service';
 import { TypeRoomRepositoryInterface } from './interface/type-room.interface';
 import { CreateItinerariesDto } from '../itineraries/dto/create-itineraries.dto';
@@ -18,6 +18,7 @@ import { BookingCruiseRepositoryInterface } from './interface/booking.interface'
 import { UsersService } from '../users/users.service';
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { SendEmailCustomDto } from 'src/send-mail/send-mail.entity';
+import { DetailLocationService } from '../detail-location/detail-location.service';
 
 @Injectable()
 export class CruiseService {
@@ -33,10 +34,11 @@ export class CruiseService {
     private readonly accompaniedServiceService: AccompaniedServiceService,
     private readonly serviceBookingService: ServiceBookingService,
     private readonly sendMailService: SendMailService,
+    private readonly detailLocationService: DetailLocationService,
   ) {}
 
   create(dto: CreateCruiseDto) {
-    if (!dto.destinationId || !dto.detailLocationId || !dto.name || !dto.contentBrief || !dto.detail || !dto.images || !dto.price) throw new Error(messageResponse.system.missingData);
+    if (!dto.destinationId || !dto.name || !dto.contentBrief || !dto.detail || !dto.images || !dto.price) throw new Error(messageResponse.system.missingData);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
     return this.cruiseRepository.create({ ...dto, slug: slug });
   }
@@ -90,6 +92,13 @@ export class CruiseService {
     return this.serviceBookingService.addCruiseServiceBooking(dto.cruiseId, dto.otherServices);
   }
 
+  async updateCruiseDetailLocation(dto: UpdateCruiseDetailLocation) {
+    const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
+    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const deleteOld = await this.detailLocationService.deleteCruiseDetailLocation(dto.cruiseId);
+    return this.detailLocationService.addCruiseDetailLocation(dto.cruiseId, dto.detailLocationIds);
+  }
+
   async addRoomType(dto: CreateOrUpdateRoomTypeDto) {
     if (!dto.name || !dto.price || !dto.totalRooms || !dto.typeBed || !dto.acreage || !dto.maxAdult) throw new Error(messageResponse.system.missingData);
     const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
@@ -138,16 +147,23 @@ export class CruiseService {
     const filter: any = {};
     if (search) filter.name = { [Op.like]: `%${search}%` };
     if (destinationId) filter.destinationId = destinationId;
-    if (detailLocationId) filter.detailLocationId = detailLocationId;
+    const include: any[] = [
+      { model: SpecialOfferModel, as: 'specialOffers', attributes: ['name', 'content'] },
+      { model: AccompaniedServiceModel, as: 'accompaniedServices', attributes: ['name', 'slug'] },
+    ];
+    if (detailLocationId) {
+      include.push({
+        model: DetailLocationModel,
+        as: 'detailLocations',
+        where: { id: detailLocationId },
+      });
+    }
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
       typeSort: typeSort,
       projection: ['id', 'name', 'totalRoom', 'reviewTripadvisor', 'linkTripadvisor', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
-      include: [
-        { model: SpecialOfferModel, as: 'specialOffers', attributes: ['name', 'content'] },
-        { model: AccompaniedServiceModel, as: 'accompaniedServices', attributes: ['name', 'slug'] },
-      ],
+      include,
     });
   }
 
@@ -155,32 +171,46 @@ export class CruiseService {
     const filter: any = {};
     if (search) filter.name = { [Op.like]: `%${search}%` };
     if (destinationId) filter.destinationId = destinationId;
-    if (detailLocationId) filter.detailLocationId = detailLocationId;
+
+    const include: any[] = [
+      {
+        //
+        model: SpecialOfferModel,
+        as: 'specialOffers',
+        attributes: ['id'],
+      },
+      {
+        model: AccompaniedServiceModel,
+        as: 'accompaniedServices',
+        attributes: ['id'],
+        // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+      },
+      {
+        model: OtherServiceBookingModel,
+        as: 'otherServiceBookings',
+        attributes: ['id'],
+        // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+      },
+      {
+        model: DetailLocationModel,
+        as: 'detailLocations',
+        attributes: ['id'],
+        // Chỉ lấy ra các trường cần thiết từ bảng trung gian
+      },
+    ];
+    if (detailLocationId) {
+      include.push({
+        model: DetailLocationModel,
+        as: 'detailLocations',
+        where: { id: detailLocationId },
+      });
+    }
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
-      projection: ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      projection: ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       typeSort: typeSort,
-      include: [
-        {
-          //
-          model: SpecialOfferModel,
-          as: 'specialOffers',
-          attributes: ['id'],
-        },
-        {
-          model: AccompaniedServiceModel,
-          as: 'accompaniedServices',
-          attributes: ['id'],
-          // Chỉ lấy ra các trường cần thiết từ bảng trung gian
-        },
-        {
-          model: OtherServiceBookingModel,
-          as: 'otherServiceBookings',
-          attributes: ['id'],
-          // Chỉ lấy ra các trường cần thiết từ bảng trung gian
-        },
-      ],
+      include,
     });
   }
 
@@ -208,7 +238,7 @@ export class CruiseService {
       {
         slug: slug,
       },
-      ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'detailLocationId', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       {
         include: [
           {

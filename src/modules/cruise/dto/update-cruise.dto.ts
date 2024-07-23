@@ -27,3 +27,11 @@ export class UpdateOtherBookingService {
   @ApiProperty({ name: 'accompaniedServiceIds', type: [Number], description: 'Danh sachs id specialOffer' })
   otherServices: number[];
 }
+
+export class UpdateCruiseDetailLocation {
+  @ApiProperty({ name: 'cruiseId', type: Number, description: 'Id Cruise' })
+  cruiseId: number;
+
+  @ApiProperty({ name: 'accompaniedServiceIds', type: [Number], description: 'Danh sachs id specialOffer' })
+  detailLocationIds: number[];
+}

@@ -1,6 +1,6 @@
 import { BeforeCount, BeforeFind, BeforeSave, BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { AccompaniedServiceModel, CruiseAccompaniedServiceModel, CruiseOtherServiceBookingModel, CruiseSpecialOfferModel, DestinationModel, DetailLocationModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel, addConditionNotDelete } from '.';
+import { AccompaniedServiceModel, CruiseAccompaniedServiceModel, CruiseDetailLocationModel, CruiseOtherServiceBookingModel, CruiseSpecialOfferModel, DestinationModel, DetailLocationModel, ItinerariesModel, OtherServiceBookingModel, RoomCruiseModel, SpecialOfferModel, addConditionNotDelete } from '.';
 
 @Table({
   tableName: 'cruise',
@@ -19,15 +19,6 @@ export class CruiseModel extends Model {
   @BelongsTo(() => DestinationModel)
   destination: DestinationModel;
 
-  @ForeignKey(() => DetailLocationModel)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  detailLocationId: number;
-
-  @BelongsTo(() => DetailLocationModel)
-  detailLocation: DetailLocationModel;
-
   @Column({
     type: DataType.STRING,
   })
@@ -40,12 +31,6 @@ export class CruiseModel extends Model {
 
   @Column({ type: DataType.TEXT })
   detail: string;
-
-  @Column({ type: DataType.TEXT })
-  linkTripadvisor: string;
-
-  @Column({ type: DataType.INTEGER })
-  reviewTripadvisor: number;
 
   @Column({
     type: DataType.STRING,
@@ -100,6 +85,9 @@ export class CruiseModel extends Model {
 
   @BelongsToMany(() => OtherServiceBookingModel, () => CruiseOtherServiceBookingModel)
   otherServiceBookings: OtherServiceBookingModel[];
+
+  @BelongsToMany(() => DetailLocationModel, () => CruiseDetailLocationModel)
+  detailLocations: DetailLocationModel[];
 
   @HasMany(() => RoomCruiseModel)
   roomCruises: RoomCruiseModel[];

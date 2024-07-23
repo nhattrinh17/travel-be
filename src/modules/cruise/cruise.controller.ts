@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { CruiseService } from './cruise.service';
 import { BookingCruiseDto, CreateCruiseDto, CreateOrUpdateRoomTypeDto } from './dto/create-cruise.dto';
-import { UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
+import { UpdateCruiseDetailLocation, UpdateCruiseDto, UpdateOtherBookingService, UpdateSpecialAccompaniedService, UpdateSpecialOfferCruise } from './dto/update-cruise.dto';
 import { ApiOperationCustom, BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/decorators';
@@ -60,6 +60,16 @@ export class CruiseController {
   async updateAccompaniedService(@Body() dto: UpdateSpecialAccompaniedService) {
     try {
       return await this.cruiseService.updateAccompaniedService(dto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('/detail-location')
+  @ApiOperationCustom('Tour Detail Location', 'post')
+  async updateDetailLocation(@Body() dto: UpdateCruiseDetailLocation) {
+    try {
+      return await this.cruiseService.updateCruiseDetailLocation(dto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

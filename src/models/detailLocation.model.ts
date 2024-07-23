@@ -1,6 +1,6 @@
-import { BeforeCount, BeforeFind, BeforeSave, BelongsTo, Column, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { BeforeCount, BeforeFind, BeforeSave, BelongsTo, BelongsToMany, Column, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { DestinationModel, addConditionNotDelete } from '.';
+import { CruiseDetailLocationModel, CruiseModel, DestinationModel, addConditionNotDelete } from '.';
 
 @Table({
   tableName: 'detailLocation',
@@ -41,6 +41,9 @@ export class DetailLocationModel extends Model {
 
   @BelongsTo(() => DestinationModel)
   destination: DestinationModel;
+
+  @BelongsToMany(() => CruiseModel, () => CruiseDetailLocationModel)
+  cruises: CruiseModel[];
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isDeleted: boolean;

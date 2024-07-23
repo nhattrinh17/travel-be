@@ -25,8 +25,8 @@ export class DetailLocationController {
   @Get()
   @Public()
   @ApiOperationCustom('DetailLocation', 'get')
-  findAll(@Pagination() pagination: PaginationDto, @Query('idDestination') idDestination: number) {
-    return this.detailLocationService.findAll(pagination, idDestination);
+  findAll(@Pagination() pagination: PaginationDto, @Query('destinationId') destinationId: number) {
+    return this.detailLocationService.findAll(pagination, destinationId);
   }
 
   @Get(':id')

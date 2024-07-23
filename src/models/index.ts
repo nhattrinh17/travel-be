@@ -19,6 +19,7 @@ export * from './cruiseOtherService.model';
 export * from './bookingCruise.model';
 export * from './bookingTour.model';
 export * from './review.model';
+export * from './cruiseDetailLocation';
 
 export const addConditionNotDelete = (options: any) => {
   if (!options.where) {

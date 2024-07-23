@@ -4,9 +4,6 @@ export class CreateCruiseDto {
   @ApiProperty({ name: 'destinationId', type: Number, description: 'Id địa điểm' })
   destinationId: number;
 
-  @ApiProperty({ name: 'detailLocationId', type: Number, description: 'Id địa điểm chi tiết' })
-  detailLocationId: number;
-
   @ApiProperty({ name: 'name', type: String, description: 'Tên' })
   name: string;
 
