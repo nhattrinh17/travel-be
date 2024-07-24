@@ -208,7 +208,7 @@ export class CruiseService {
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
-      projection: ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      projection: ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail', 'createdAt'],
       typeSort: typeSort,
       include,
     });
