@@ -120,7 +120,7 @@ export class TourService {
     if (type >= 0) filter.type = type;
     return this.tourRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      projection: ['id', 'createdAt', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       sort: sort,
       typeSort: typeSort,
       include: [
