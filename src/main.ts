@@ -21,8 +21,11 @@ async function bootstrap() {
   app.use(helmet());
   app.setGlobalPrefix('/api'); //use api as global prefix if you don't have subdomain
 
-  app.register(fastyfyMultipart as any);
-
+  app.register(fastyfyMultipart as any, {
+    limits: {
+      fileSize: 10 * 1024 * 1024, // Giới hạn kích thước tệp là 100MB
+    },
+  });
   // app.register(fastifyCors, {
   //   credentials: true,
   //   origin: `https://${configService.get<string>('DOMAIN')}`,

@@ -13,12 +13,16 @@ export class UploadController {
   @Public()
   @Post('image')
   async uploadImage(@UploadedFilesCustomer() files: any[], @Query('folder') folder: string) {
-    if (!files.length) {
-      throw new HttpException('file not found', 500);
+    try {
+      if (!files.length) {
+        throw new HttpException('file not found', 500);
+      }
+      const paths = await Promise.all(files.map((file) => this.firebaseService.uploadImageToStorage(file, folder || 'client')));
+      return {
+        data: paths,
+      };
+    } catch (error) {
+      console.error('Error uploading', error);
     }
-    const paths = await Promise.all(files.map((file) => this.firebaseService.uploadImageToStorage(file, folder || 'client')));
-    return {
-      data: paths,
-    };
   }
 }
