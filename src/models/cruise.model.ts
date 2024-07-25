@@ -63,6 +63,16 @@ export class CruiseModel extends Model {
   totalRoom: number;
 
   @Column({
+    type: DataType.TEXT,
+  })
+  linkTripadvisor: string;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  reviewTripadvisor: number;
+
+  @Column({
     type: DataType.STRING,
   })
   styleCruise: string;

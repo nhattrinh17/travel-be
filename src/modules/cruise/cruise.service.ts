@@ -272,6 +272,7 @@ export class CruiseService {
   }
 
   async update(id: number, dto: UpdateCruiseDto) {
+    console.log('🚀 ~ CruiseService ~ update ~ dto:', dto);
     const cruiseById = await this.cruiseRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
