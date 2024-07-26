@@ -4,16 +4,27 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { BaseFilter, Pagination, PaginationDto } from 'src/custom-decorator';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/decorators';
+import { SendMailService } from 'src/send-mail/send-mail.service';
+import { SendEmailHomeDto } from 'src/send-mail/send-mail.entity';
 
 @ApiTags('User')
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly sendMailService: SendMailService,
+  ) {}
 
-  @Public()
+  // @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Public()
+  @Post('send-mail')
+  sendMail(@Body() dto: SendEmailHomeDto) {
+    return this.sendMailService.sendMailHome(dto);
   }
 
   @Get()

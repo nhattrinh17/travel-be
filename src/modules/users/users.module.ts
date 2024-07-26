@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModel } from 'src/models';
 import { UserRepository } from './repository/users.repository';
 import { Helper } from 'src/utils';
+import { SendMailService } from 'src/send-mail/send-mail.service';
 
 @Module({
   imports: [SequelizeModule.forFeature([UserModel])],
@@ -16,6 +17,7 @@ import { Helper } from 'src/utils';
       useClass: UserRepository,
     },
     Helper,
+    SendMailService,
   ],
   exports: [
     UsersService,

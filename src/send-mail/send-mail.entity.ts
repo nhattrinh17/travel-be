@@ -43,3 +43,10 @@ export class SendEmailCustomDto {
   subject: string;
   content: string;
 }
+
+export class SendEmailHomeDto {
+  otherRequest: string;
+  fullName: string;
+  email: string;
+  phone: string;
+}

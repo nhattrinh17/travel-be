@@ -1,6 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { SendEmailCustomDto, SendMailBookingCruiseDto, SendMailBookingTourDto, SendMailDto } from './send-mail.entity';
+import { SendEmailCustomDto, SendEmailHomeDto, SendMailBookingCruiseDto, SendMailBookingTourDto, SendMailDto } from './send-mail.entity';
 
 @Injectable()
 export class SendMailService {
@@ -27,6 +27,17 @@ export class SendMailService {
       // from: '"Support Team" <support@example.com>', // override default from
       subject: dto.subject,
       html: dto.content,
+    });
+  }
+
+  async sendMailHome(dto: SendEmailHomeDto) {
+    return this.mailerService.sendMail({
+      to: dto.email,
+      subject: 'Help Customer',
+      template: './email-home',
+      context: {
+        ...dto,
+      },
     });
   }
 
