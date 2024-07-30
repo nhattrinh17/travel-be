@@ -27,6 +27,9 @@ export class CreateTourDto {
 
   @ApiProperty({ name: 'discount', type: String, description: 'flash sale' })
   travelerLoves: string;
+
+  @ApiProperty({ name: 'type', type: Number, description: 'flash sale' })
+  type: number;
 }
 
 export class UpdateSpecialOfferTourDto {

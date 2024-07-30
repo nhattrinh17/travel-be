@@ -120,7 +120,7 @@ export class TourService {
     if (type >= 0) filter.type = type;
     return this.tourRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'createdAt', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      projection: ['id', 'createdAt', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'type', 'packetTourId'],
       sort: sort,
       typeSort: typeSort,
       include: [
@@ -207,6 +207,7 @@ export class TourService {
     const cruiseById = await this.tourRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    if (dto.type == TypeTour.Daily) dto.packetTourId = null;
     return this.tourRepository.findByIdAndUpdate(id, { ...dto, slug });
   }
 
