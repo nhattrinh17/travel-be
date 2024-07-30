@@ -140,10 +140,14 @@ export class TourController {
     return this.tourService.findAllBookingTour(pagination, sort, typeSort);
   }
 
-  @Get(':slug')
+  @Get('slug')
   @Public()
+  @ApiQuery({
+    name: 'name',
+    type: String,
+  })
   @ApiOperationCustom('Tour', 'get')
-  findOne(@Param('slug') slug: string) {
+  findOne(@Query('name') slug: string) {
     return this.tourService.findOne(slug);
   }
 
