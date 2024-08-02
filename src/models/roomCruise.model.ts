@@ -1,6 +1,6 @@
 import { BeforeCount, BeforeFind, BeforeSave, Column, ForeignKey, BelongsTo, Model, Table } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { CruiseModel, addConditionNotDelete } from '.';
+import { CruiseModel, ItinerariesModel, addConditionNotDelete } from '.';
 
 @Table({
   tableName: 'roomCruise',
@@ -19,6 +19,15 @@ export class RoomCruiseModel extends Model {
   @BelongsTo(() => CruiseModel)
   cruise: CruiseModel;
 
+  @ForeignKey(() => ItinerariesModel)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  itinerariesId: number;
+
+  @BelongsTo(() => ItinerariesModel)
+  itineraries: ItinerariesModel;
+
   @Column({
     type: DataType.TEXT,
   })
@@ -28,11 +37,6 @@ export class RoomCruiseModel extends Model {
     type: DataType.INTEGER,
   })
   price: number;
-
-  @Column({
-    type: DataType.TEXT,
-  })
-  priceDetail: string;
 
   @Column({
     type: DataType.INTEGER,

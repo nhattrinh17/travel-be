@@ -51,14 +51,17 @@ export class CreateOrUpdateRoomTypeDto {
   @ApiProperty({ name: 'cruiseId', type: Number, description: 'Id Cruise' })
   cruiseId: number;
 
+  @ApiProperty({ name: 'itinerariesId', type: Number, description: 'Id itineraries' })
+  itinerariesId: number;
+
   @ApiProperty({ name: 'name', type: String, description: 'Tên phòng' })
   name: string;
 
   @ApiProperty({ name: 'price', type: Number, description: 'Giá phòng' })
   price: number;
-  
-  @ApiProperty({ name: 'priceDetail', type: String, description: 'Giá phòng text' })
-  priceDetail: string;
+
+  // @ApiProperty({ name: 'priceDetail', type: String, description: 'Giá phòng text' })
+  // priceDetail: string;
 
   @ApiProperty({ name: 'totalRooms', type: Number, description: 'Tổng số phòng trên thuyền' })
   totalRooms: number;
