@@ -100,7 +100,7 @@ export class CruiseService {
   }
 
   async addRoomType(dto: CreateOrUpdateRoomTypeDto) {
-    if (!dto.name || !dto.price || !dto.totalRooms || !dto.typeBed || !dto.acreage || !dto.maxAdult) throw new Error(messageResponse.system.missingData);
+    if (!dto.name || !dto.totalRooms || !dto.typeBed || !dto.acreage || !dto.maxAdult) throw new Error(messageResponse.system.missingData);
     const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     return this.typeRoomRepository.create(dto);
@@ -122,7 +122,7 @@ export class CruiseService {
         offset: 0,
         page: 1,
 
-        projection: ['id', 'name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+        projection: ['id', 'name', 'price', 'priceDetail', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
       },
     );
   }
@@ -259,7 +259,7 @@ export class CruiseService {
           {
             model: RoomCruiseModel,
             as: 'roomCruises',
-            attributes: ['name', 'price', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+            attributes: ['name', 'price', 'priceDetail', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
           },
           {
             model: ItinerariesModel,
@@ -272,7 +272,6 @@ export class CruiseService {
   }
 
   async update(id: number, dto: UpdateCruiseDto) {
-    console.log('🚀 ~ CruiseService ~ update ~ dto:', dto);
     const cruiseById = await this.cruiseRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;

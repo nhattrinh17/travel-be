@@ -54,8 +54,11 @@ export class CreateOrUpdateRoomTypeDto {
   @ApiProperty({ name: 'name', type: String, description: 'Tên phòng' })
   name: string;
 
-  @ApiProperty({ name: 'name', type: Number, description: 'Giá phòng' })
+  @ApiProperty({ name: 'price', type: Number, description: 'Giá phòng' })
   price: number;
+  
+  @ApiProperty({ name: 'priceDetail', type: String, description: 'Giá phòng text' })
+  priceDetail: string;
 
   @ApiProperty({ name: 'totalRooms', type: Number, description: 'Tổng số phòng trên thuyền' })
   totalRooms: number;

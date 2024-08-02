@@ -30,6 +30,11 @@ export class RoomCruiseModel extends Model {
   price: number;
 
   @Column({
+    type: DataType.TEXT,
+  })
+  priceDetail: string;
+
+  @Column({
     type: DataType.INTEGER,
   })
   totalRooms: number;
