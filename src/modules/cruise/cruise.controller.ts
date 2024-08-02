@@ -179,9 +179,13 @@ export class CruiseController {
 
   @Get(':id/room')
   @BaseFilter()
+  @ApiQuery({
+    name: 'itinerariesId',
+    type: Number,
+  })
   @ApiOperationCustom('Cruise CMS', 'POST')
-  findAllRoom(@Param('id') id: string) {
-    return this.cruiseService.getAllRoomCruise(+id);
+  findAllRoom(@Param('id') id: string, @Query('itinerariesId') itinerariesId: string) {
+    return this.cruiseService.getAllRoomCruise(+id, +itinerariesId);
   }
 
   @Get(':id/itineraries')

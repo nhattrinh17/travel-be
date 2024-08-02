@@ -112,17 +112,18 @@ export class CruiseService {
     return this.typeRoomRepository.findByIdAndUpdate(dto.roomId, dto);
   }
 
-  async getAllRoomCruise(idCruise: number) {
+  async getAllRoomCruise(idCruise: number, itinerariesId: number) {
     return this.typeRoomRepository.findAll(
       {
         cruiseId: idCruise,
+        itinerariesId,
       },
       {
         limit: 100,
         offset: 0,
         page: 1,
 
-        projection: ['id', 'name', 'price', 'priceDetail', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+        projection: ['id', 'name', 'price', 'notes', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
       },
     );
   }
@@ -259,12 +260,13 @@ export class CruiseService {
           {
             model: RoomCruiseModel,
             as: 'roomCruises',
-            attributes: ['name', 'price', 'priceDetail', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+            attributes: ['name', 'price', 'totalRooms', 'itinerariesId', 'notes', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+            sort: ['price', 'ASC'],
           },
           {
             model: ItinerariesModel,
             as: 'itineraries',
-            attributes: ['name', 'day', 'description', 'content'],
+            attributes: ['id', 'name', 'day', 'description', 'content'],
           },
         ],
       },

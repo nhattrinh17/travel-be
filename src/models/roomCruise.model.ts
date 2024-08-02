@@ -71,6 +71,11 @@ export class RoomCruiseModel extends Model {
   @Column({
     type: DataType.TEXT,
   })
+  notes: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
   specialService: string;
 
   @Column({
