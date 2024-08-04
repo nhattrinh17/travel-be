@@ -54,6 +54,11 @@ export class TourModel extends Model {
   price: number;
 
   @Column({
+    type: DataType.DOUBLE,
+  })
+  stars: number;
+
+  @Column({
     type: DataType.BOOLEAN,
   })
   isFlashSale: boolean;

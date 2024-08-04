@@ -89,7 +89,7 @@ export class TourService {
       ...pagination,
       sort: sort,
       typeSort: typeSort,
-      projection: ['name', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      projection: ['name', 'stars', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       include: [
         { model: SpecialOfferModel, as: 'specialOffers', attributes: ['name', 'content'] },
         { model: AccompaniedServiceModel, as: 'accompaniedServices', attributes: ['name', 'slug'] },
@@ -120,7 +120,7 @@ export class TourService {
     if (type >= 0) filter.type = type;
     return this.tourRepository.findAll(filter, {
       ...pagination,
-      projection: ['id', 'createdAt', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'type', 'packetTourId'],
+      projection: ['id', 'createdAt', 'stars', 'name', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'type', 'packetTourId'],
       sort: sort,
       typeSort: typeSort,
       include: [
@@ -164,7 +164,7 @@ export class TourService {
       {
         slug: slug,
       },
-      ['id', 'name', 'packetTourId', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      ['id', 'name', 'stars', 'packetTourId', 'contentBrief', 'detail', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       {
         include: [
           {

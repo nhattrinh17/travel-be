@@ -19,6 +19,9 @@ export class CreateCruiseDto {
   @ApiProperty({ name: 'price', type: Number, description: 'Giá hiện tại' })
   price: number;
 
+  @ApiProperty({ name: 'price', type: Number, description: 'Số sao' })
+  stars: number;
+
   @ApiProperty({ name: 'linkTripadvisor', type: String, description: 'Nội dung chi tiết' })
   linkTripadvisor: string;
 

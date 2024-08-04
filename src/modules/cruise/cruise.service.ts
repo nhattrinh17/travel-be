@@ -163,7 +163,7 @@ export class CruiseService {
       ...pagination,
       sort: sort,
       typeSort: typeSort,
-      projection: ['id', 'name', 'totalRoom', 'reviewTripadvisor', 'linkTripadvisor', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
+      projection: ['id', 'name', 'stars', 'totalRoom', 'reviewTripadvisor', 'linkTripadvisor', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves'],
       include,
     });
   }
@@ -209,7 +209,7 @@ export class CruiseService {
     return this.cruiseRepository.findAll(filter, {
       ...pagination,
       sort: sort,
-      projection: ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail', 'createdAt'],
+      projection: ['id', 'name', 'stars', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail', 'createdAt'],
       typeSort: typeSort,
       include,
     });
@@ -239,7 +239,7 @@ export class CruiseService {
       {
         slug: slug,
       },
-      ['id', 'name', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
+      ['id', 'name', 'stars', 'destinationId', 'reviewTripadvisor', 'linkTripadvisor', 'totalRoom', 'styleCruise', 'timeLaunched', 'contentBrief', 'slug', 'images', 'price', 'isFlashSale', 'discount', 'travelerLoves', 'detail'],
       {
         include: [
           {

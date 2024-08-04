@@ -19,6 +19,9 @@ export class CreateTourDto {
   @ApiProperty({ name: 'price', type: Number, description: 'Giá hiện tại' })
   price: number;
 
+  @ApiProperty({ name: 'stars', type: Number, description: 'Giá hiện tại' })
+  stars: number;
+
   @ApiProperty({ name: 'isFlashSale', type: Boolean, description: 'flash sale' })
   isFlashSale: boolean;
 
