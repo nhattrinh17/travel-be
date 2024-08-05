@@ -47,7 +47,7 @@ export class CruiseService {
     if (!dto.cruiseId || !dto.dataRoomSelect.length || !dto.email) throw new Error(messageResponse.system.missingData);
     const cruiseById = await this.cruiseRepository.findOneById(dto.cruiseId);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
-    const detail = generateBookingCruiseHTML(dto);
+    const detail = generateBookingCruiseHTML(dto, cruiseById.name);
     this.sendMailService.sendMailBookingCruise({
       ...dto,
       cruiseName: cruiseById.name,
@@ -260,7 +260,7 @@ export class CruiseService {
           {
             model: RoomCruiseModel,
             as: 'roomCruises',
-            attributes: ['name', 'price', 'totalRooms', 'itinerariesId', 'notes', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+            attributes: ['id', 'name', 'price', 'totalRooms', 'itinerariesId', 'notes', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
             sort: ['price', 'ASC'],
           },
           {

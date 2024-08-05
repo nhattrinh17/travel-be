@@ -12,18 +12,27 @@ export class SendMailDto {
   signerWebsite: string;
 }
 
+export class DataRoomSelect {
+  indexRoom: number;
+  nameRoom: string;
+  price: number;
+  adult: number;
+  child: number;
+  infant: number;
+  typeBed: string;
+}
+
 export class SendMailBookingCruiseDto {
+  cruiseName: string;
   sendTo: string;
-  fullName: string;
   email: string;
+  fullName: string;
   phone: string;
   country: string;
   date: string;
-  cruiseName: string;
   typeItineraries: string;
   totalRoom: number;
-  totalAdult: number;
-  totalChildren: number;
+  dataRoomSelect: DataRoomSelect[];
 }
 
 export class SendMailBookingTourDto {

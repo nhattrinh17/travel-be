@@ -1,87 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 24px;
-            color: #333333;
-        }
-        .info, .booking-details, .footer {
-            margin-bottom: 20px;
-        }
-        .info p, .booking-details p, .footer p {
-            font-size: 16px;
-            color: #555555;
-            margin: 5px 0;
-        }
-        .booking-details h2 {
-            font-size: 20px;
-            color: #333333;
-            margin-bottom: 10px;
-        }
-        .footer {
-            text-align: start;
-            font-size: 14px;
-        }
-
-        .footer b {
-            padding-bottom: 4px;
-            border-bottom: 1px double #000;
-        }
-        .footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
+      body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #fff; } .container { width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px; } .header { text-align: center; padding-bottom: 20px; } .header h1 { font-size: 24px; color: #333333; } .info, .booking-details, .footer { margin-bottom: 20px; } .info p, .booking-details p, .footer p { font-size: 16px; color: #555555; margin: 5px 0; } .booking-details h2 { font-size: 20px; color: #333333; margin-bottom: 10px; } .footer { text-align: start; font-size: 14px; } .footer b { padding-bottom: 4px; border-bottom: 1px double #000; } .footer a { color: #007bff; text-decoration: none; } .footer a:hover {
+      text-decoration: underline; } .room-details { margin-bottom: 20px; } .room-details p { margin-left: 20px; }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>BLOBAL Travel</h1>
-        </div>
-        <div class="info">
-            <p><strong>Full Name:</strong> {{fullName}}</p>
-            <p><strong>Email:</strong> {{email}}</p>
-            <p><strong>Phone:</strong> {{phone}}</p>
-            <p><strong>Country:</strong> {{country}}</p>
-            <p><strong>Date:</strong> {{date}}</p>
-        </div>
-        <div class="booking-details">
-            <h2>{{cruiseName}}</h2>
-            <p><strong>Itineraries:</strong> {{typeItineraries}}</p>
-            <p><strong>Total Rooms:</strong> {{totalRoom}}</p>
-            <p><strong>Total Adults:</strong> {{totalAdult}}</p>
-            <p><strong>Total Children:</strong> {{totalChildren}}</p>
-        </div>
-        <div class="footer">
-            <b style="text-transform: uppercase;">Global Travel Viet</b>
-            <p>Hotline: 003343682463</p>
-            <p>Email: <a href="mailto:demo@gmail.com">demo@gmail.com</a></p>
-            <p>Website: <a href="http://www.abc.com">www.abc.com</a></p>
-        </div>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='header'>
+        <h1>GLOBAL Travel</h1>
+      </div>
+      <div class='info'>
+        <p><strong>Full Name:</strong> {{fullName}}</p>
+        <p><strong>Email:</strong> {{email}}</p>
+        <p><strong>Phone:</strong> {{phone}}</p>
+        <p><strong>Country:</strong> {{country}}</p>
+        <p><strong>Date:</strong> {{date}}</p>
+      </div>
+      <div class='booking-details'>
+        <h2>{{cruiseName}}</h2>
+        <p><strong>Itineraries:</strong> {{typeItineraries}}</p>
+        <p><strong>Total Rooms:</strong> {{totalRoom}}</p>
+        {{#each dataRoomSelect}}
+          <div class='room-details'>
+            <h3>Room {{indexRoom}}:</h3>
+            <p><strong>Room style:</strong> {{nameRoom}}</p>
+            <p><strong>Total Adults:</strong> {{adult}}</p>
+            <p><strong>Total Children:</strong> {{child}}</p>
+            <p><strong>Total Infants:</strong> {{infant}}</p>
+            <p><strong>Price:</strong> {{price}}</p>
+          </div>
+        {{/each}}
+      </div>
+      <div class='footer'>
+        <b style='text-transform: uppercase;'>Global Travel Viet</b>
+        <p>Hotline: 003343682463</p>
+        <p>Email: <a href='mailto:demo@gmail.com'>demo@gmail.com</a></p>
+        <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
+      </div>
     </div>
-</body>
+  </body>
 </html>
