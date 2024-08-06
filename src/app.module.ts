@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -24,6 +24,7 @@ import { CruiseModule } from './modules/cruise/cruise.module';
 import { PacketTourModule } from './modules/packet-tour/packet-tour.module';
 import { ServiceBookingModule } from './modules/service-booking/service-booking.module';
 import { ReviewModule } from './modules/review/review.module';
+import { registerHelpers } from './templates/handlebars-helpers';
 
 @Module({
   imports: [
@@ -116,4 +117,8 @@ import { ReviewModule } from './modules/review/review.module';
     { provide: APP_GUARD, useClass: PermissionGuard },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  onModuleInit() {
+    registerHelpers();
+  }
+}
