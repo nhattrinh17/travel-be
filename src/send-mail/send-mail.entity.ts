@@ -21,6 +21,20 @@ export class DataRoomSelect {
   infant: number;
   typeBed: string;
 }
+export class OtherService {
+  name: string;
+  adult: number;
+  child: number;
+  description: number;
+  infant: number;
+  time: string;
+}
+
+export class DataTransfer {
+  name: string;
+  address: string;
+  options: string;
+}
 
 export class SendMailBookingCruiseDto {
   cruiseName: string;
@@ -33,6 +47,9 @@ export class SendMailBookingCruiseDto {
   typeItineraries: string;
   totalRoom: number;
   dataRoomSelect: DataRoomSelect[];
+  otherServices: OtherService[];
+
+  dataTransfer: DataTransfer;
 }
 
 export class SendMailBookingTourDto {
