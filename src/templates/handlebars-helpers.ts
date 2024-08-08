@@ -8,4 +8,7 @@ export function registerHelpers() {
     });
     return totalPrice;
   });
+  Handlebars.registerHelper('default', function (value, defaultValue) {
+    return value !== undefined ? value : defaultValue;
+  });
 }
