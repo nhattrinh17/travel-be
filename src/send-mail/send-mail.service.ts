@@ -32,8 +32,8 @@ export class SendMailService {
 
   async sendMailHome(dto: SendEmailHomeDto) {
     return this.mailerService.sendMail({
-      to: dto.email,
-      subject: 'Help Customer',
+      to: process.env.MAIL_TO_DEFAULT,
+      subject: dto.subject || 'Help Customer',
       template: './email-home',
       context: {
         ...dto,

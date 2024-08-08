@@ -1,97 +1,38 @@
-<!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset='UTF-8' />
     <title>Support Request for Tour Booking</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eaeaea;
-        }
-
-        .header h2 {
-            margin: 0;
-            color: #007BFF;
-        }
-
-        .content {
-            padding: 20px 0;
-        }
-
-        .content p {
-            line-height: 1.6;
-            margin: 10px 0;
-        }
-
-        .content p strong {
-            display: inline-block;
-            width: 150px;
-            color: #555;
-        }
-
-        .footer {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #eaeaea;
-            color: #777;
-        }
-
-        .footer b {
-            padding-bottom: 4px;
-            border-bottom: 1px double #000;
-        }
-
-        .footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
+      body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; color: #333; } .container { width: 80%; max-width: 600px; margin: 20px auto; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; } .header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #eaeaea; } .header h2 { margin: 0; color: #007BFF; } .content { padding: 20px 0; } .content p { line-height: 1.6; margin: 10px 0; } .content p strong { display: inline-block; width: 150px; color: #555; } .footer { text-align: center; padding-top: 20px; border-top: 1px solid #eaeaea; color: #777; } .footer b { padding-bottom: 4px; border-bottom:
+      1px double #000; } .footer a { color: #007bff; text-decoration: none; } .footer a:hover { text-decoration: underline; }
     </style>
-</head>
+  </head>
 
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>Customer Support Request for Booking</h2>
-        </div>
-        <div class="content">
-            <p><strong>Full Name:</strong> {{fullName}}</p>
-            <p><strong>Email:</strong> {{email}}</p>
-            <p><strong>Phone:</strong> {{phone}}</p>
-            <p><strong>Other Request:</strong> {{otherRequest}}</p>
-        </div>
-        <div class="footer">
-            <p>Thank you for reaching out to us. We will get back to you as soon as possible.</p>
-            <b style="text-transform: uppercase;">Global Travel Viet</b>
-            <p>Hotline: 003343682463</p>
-            <p>Email: <a href="mailto:demo@gmail.com">demo@gmail.com</a></p>
-            <p>Website: <a href="http://www.abc.com">www.abc.com</a></p>
-        </div>
+  <body>
+    <div class='container'>
+      <div class='header'>
+        <h2>Customer Support Request for Booking</h2>
+      </div>
+      <div class='content'>
+        <p><strong>Full Name:</strong> {{fullName}}</p>
+        <p><strong>Email:</strong> {{email}}</p>
+        <p><strong>Phone:</strong> {{phone}}</p>
+        {{#if numberPerson}}
+          <p><strong>Number Person:</strong> {{numberPerson}}</p>
+        {{/if}}
+        <p><strong>Other Request:</strong> {{otherRequest}}</p>
+
+      </div>
+      <div class='footer'>
+        <p>Thank you for reaching out to us. We will get back to you as soon as possible.</p>
+        <b style='text-transform: uppercase;'>Global Travel Viet</b>
+        <p>Hotline: 003343682463</p>
+        <p>Email: <a href='mailto:demo@gmail.com'>demo@gmail.com</a></p>
+        <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
+      </div>
 
     </div>
-</body>
+  </body>
 
 </html>
