@@ -29,7 +29,7 @@ export class ServiceBookingService {
       {},
       {
         ...pagination,
-        projection: ['id', 'name', 'type', 'description', 'options', 'createdAt'],
+        projection: ['id', 'name', 'type', 'description', 'options', 'createdAt', 'price'],
       },
     );
   }

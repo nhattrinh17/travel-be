@@ -28,12 +28,14 @@ export class OtherService {
   description: number;
   infant: number;
   time: string;
+  price: number;
 }
 
 export class DataTransfer {
   name: string;
   address: string;
   options: string;
+  price: number;
 }
 
 export class SendMailBookingCruiseDto {
@@ -46,9 +48,9 @@ export class SendMailBookingCruiseDto {
   date: string;
   typeItineraries: string;
   totalRoom: number;
+  discount: number;
   dataRoomSelect: DataRoomSelect[];
   otherServices: OtherService[];
-
   dataTransfer: DataTransfer;
 }
 
@@ -61,6 +63,8 @@ export class SendMailBookingTourDto {
   date: string;
   tourName: string;
   quantity: number;
+  price: number;
+  discount: number;
   otherRequest: string;
 }
 

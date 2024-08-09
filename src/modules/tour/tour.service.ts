@@ -37,12 +37,14 @@ export class TourService {
 
   async booking(dto: BookingTourDto) {
     if (!dto.tourId || !dto.email) throw new Error(messageResponse.system.missingData);
-    const cruiseById = await this.tourRepository.findOneById(dto.tourId);
-    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const tourById = await this.tourRepository.findOneById(dto.tourId);
+    if (!tourById) throw new Error(messageResponse.system.idInvalid);
     const detail = generateBookingTourHtml(dto);
     this.sendMailService.sendMailBookingTour({
       ...dto,
-      tourName: cruiseById.name,
+      tourName: tourById.name,
+      price: tourById.price,
+      discount: tourById.discount || 0,
       sendTo: process.env.MAIL_TO_DEFAULT,
     });
     return this.bookingTourRepository.create({
@@ -63,27 +65,28 @@ export class TourService {
   }
 
   async updateAccompaniedService(dto: UpdateSpecialAccompaniedService) {
-    const cruiseById = await this.tourRepository.findOneById(dto.tourId);
-    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const tourById = await this.tourRepository.findOneById(dto.tourId);
+    if (!tourById) throw new Error(messageResponse.system.idInvalid);
     const deleteOld = await this.accompaniedServiceService.deleteTourAccompaniedService(dto.tourId);
     return this.accompaniedServiceService.addTourAccompaniedService(dto.tourId, dto.accompaniedServiceIds);
   }
 
   async updateSpecialOffer(dto: UpdateSpecialOfferTourDto) {
-    const cruiseById = await this.tourRepository.findOneById(dto.tourId);
-    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const tourById = await this.tourRepository.findOneById(dto.tourId);
+    if (!tourById) throw new Error(messageResponse.system.idInvalid);
     const deleteOld = await this.specialOfferService.deleteTourSpecialOffer(dto.tourId);
     return this.specialOfferService.addTourSpecialOffer(dto.tourId, dto.specialOfferIds);
   }
 
   findAll(search: string, packetTourId: number, type: number, pagination: PaginationDto, sort: string, typeSort: string) {
     const filter: any = {};
-    if (type) filter.type = type;
+    if (type >= 0) filter.type = type;
     if (search) filter.name = { [Op.like]: `%${search}%` };
     if (packetTourId) {
       filter.packetTourId = packetTourId;
       filter.type = TypeTour.Packet;
     }
+    console.log('🚀 ~ TourService ~ findAll ~ filter:', filter);
 
     return this.tourRepository.findAll(filter, {
       ...pagination,
@@ -204,16 +207,16 @@ export class TourService {
   }
 
   async update(id: number, dto: UpdateTourDto) {
-    const cruiseById = await this.tourRepository.findOneById(id);
-    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const tourById = await this.tourRepository.findOneById(id);
+    if (!tourById) throw new Error(messageResponse.system.idInvalid);
     const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
     if (dto.type == TypeTour.Daily) dto.packetTourId = null;
     return this.tourRepository.findByIdAndUpdate(id, { ...dto, slug });
   }
 
   async remove(id: number) {
-    const cruiseById = await this.tourRepository.findOneById(id);
-    if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
+    const tourById = await this.tourRepository.findOneById(id);
+    if (!tourById) throw new Error(messageResponse.system.idInvalid);
     return this.tourRepository.softDelete(id);
   }
 

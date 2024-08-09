@@ -30,6 +30,12 @@ export class OtherServiceBookingModel extends Model {
   })
   type: number;
 
+  @Column({
+    type: DataType.SMALLINT,
+    defaultValue: 0,
+  })
+  price: number;
+
   @BelongsToMany(() => CruiseModel, () => CruiseOtherServiceBookingModel)
   cruises: CruiseModel[];
 

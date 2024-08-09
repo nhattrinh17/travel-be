@@ -51,7 +51,7 @@ export class CruiseService {
     this.sendMailService.sendMailBookingCruise({
       ...dto,
       cruiseName: cruiseById.name,
-
+      discount: cruiseById.discount || 0,
       sendTo: process.env.MAIL_TO_DEFAULT,
     });
     return this.bookingCruiseRepository.create({
@@ -255,7 +255,7 @@ export class CruiseService {
           {
             model: OtherServiceBookingModel,
             as: 'otherServiceBookings',
-            attributes: ['name', 'description', 'options', 'type'],
+            attributes: ['name', 'description', 'options', 'type', 'price'],
           },
           {
             model: RoomCruiseModel,

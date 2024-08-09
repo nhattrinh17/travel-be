@@ -114,12 +114,14 @@ export class OtherService {
   description: number;
   infant: number;
   time: string;
+  price: number;
 }
 
 export class DataTransfer {
   name: string;
   address: string;
   options: string;
+  price: number;
 }
 
 export class BookingCruiseDto {
