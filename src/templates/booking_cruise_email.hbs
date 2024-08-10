@@ -47,7 +47,7 @@
               <p><strong>Adults:</strong> {{default adult 0}}</p>
               <p><strong>Children:</strong> {{default child 0}}</p>
               <p><strong>Infants:</strong> {{default infant 0}}</p>
-              <div style='display: flex;'><strong>Description:</strong> {{{description}}}</div>
+              <div style='display: flex; align-items: center;'><p><strong>Description:</strong></p> {{{description}}}</div>
               <p><strong>Time:</strong> {{default time '8:00'}}</p>
             {{/each}}
           </div>
@@ -60,7 +60,7 @@
           </div>
         {{/if}}
 
-        <p><strong>Total Price After Discount Applied :</strong> {{calculateTotalPrice dataRoomSelect discount otherServices dataTransfer}}</p>
+        <p><strong>Total Price After Discount Applied :</strong> {{calculateTotalPrice dataRoomSelect otherServices dataTransfer}}</p>
         <p>Please note that the availability of your requested tour package is subject to confirmation by our sales team. Once we verify the availability, we will promptly inform you and proceed with the booking process.</p>
         <p>If you have any specific preferences or additional requirements, please let us know so that we can tailor the tour to meet your needs. Our goal is to ensure you have a seamless and enjoyable travel experience with TH Global Travel.</p>
         <p>Thank you once again for choosing TH Global Travel. We look forward to making your travel dreams a reality.</p>

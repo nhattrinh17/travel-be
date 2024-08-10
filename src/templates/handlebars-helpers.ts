@@ -6,7 +6,6 @@ export function registerHelpers() {
     function (
       //
       dataRoomSelect,
-      discount,
       otherServices,
       dataTransfer,
     ) {
@@ -14,10 +13,6 @@ export function registerHelpers() {
       dataRoomSelect.forEach((room) => {
         totalPrice += room.price * (room.adult + room.child + room.infant);
       });
-      // console.log('🚀 ~ dataRoomSelect.forEach ~ totalPrice:', totalPrice);
-      if (discount) {
-        totalPrice -= totalPrice * (discount / 100);
-      }
       // console.log('🚀 ~ dataRoomSelect.forEach ~ totalPrice:1', totalPrice);
       if (otherServices) {
         otherServices.forEach((service) => {
