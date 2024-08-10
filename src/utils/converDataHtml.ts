@@ -6,7 +6,7 @@ export function generateBookingCruiseHTML(booking: BookingCruiseDto, cruiseName:
 
   return `
     <div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
-      <div style="width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 10px;">
+      <div style="width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px">
         <div style="padding-bottom: 20px;">
           <h1 style="font-size: 24px; color: #333333;">GLOBAL Travel</h1>
         </div>
@@ -61,10 +61,10 @@ export function generateBookingCruiseHTML(booking: BookingCruiseDto, cruiseName:
           </div>
         </div>
         <div style="text-align: start; font-size: 14px;">
-          <b style="text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px double #000;">Global Travel Viet</b>
-          <p>Hotline: 003343682463</p>
-          <p>Email: <a href='mailto:demo@gmail.com' style="color: #007bff; text-decoration: none;">demo@gmail.com</a></p>
-          <p>Website: <a href='http://www.abc.com' style="color: #007bff; text-decoration: none;">www.abc.com</a></p>
+          <b style="text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px double #000;">TH Global Travel</b>
+          <p>Hotline:<a href='tel:+84946707266'>+84946707266</a></p>
+          <p>Email: <a href='mailto:info@thglobaltravel.com'>info@thglobaltravel.com</a></p>
+          <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
         </div>
       </div>
     </div>
@@ -73,20 +73,26 @@ export function generateBookingCruiseHTML(booking: BookingCruiseDto, cruiseName:
 
 export function generateBookingTourHtml(booking: BookingTourDto): string {
   return `
-<div>
-    <h1>Booking Information</h1>
-    <p><strong>Name:</strong> ${booking.fullName}</p>
-    <p><strong>Email:</strong> ${booking.email}</p>
-    <p><strong>Phone:</strong> ${booking.phone}</p>
-    <p><strong>Country:</strong> ${booking.country}</p>
-    <p><strong>Date:</strong> ${booking.date}</p>
-    <h2>${booking.fullName}</h2>
-    <p><strong>Quantity:</strong> ${booking.quantity}</p>
-    <p><strong>Other Requests:</strong> ${booking.otherRequest}</p>
-    <h3>BLOBAL Travel</h3>
-    <p>Hotline: 003343682463</p>
-    <p>Email: demo@gmail.com</p>
-    <p>Website: <a href="http://www.abc.com">www.abc.com</a></p>
-</div>
+  <div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
+    <div style="width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px;">
+      <div style="padding-bottom: 20px;">
+        <h1 style="font-size: 24px; color: #333333;">GLOBAL Travel</h1>
+      </div>
+      <p><strong>Name:</strong> ${booking.fullName}</p>
+      <p><strong>Email:</strong> ${booking.email}</p>
+      <p><strong>Phone:</strong> ${booking.phone}</p>
+      <p><strong>Country:</strong> ${booking.country}</p>
+      <p><strong>Date:</strong> ${booking.date}</p>
+      <h2>${booking.fullName}</h2>
+      <p><strong>Quantity:</strong> ${booking.quantity}</p>
+      <p><strong>Other Requests:</strong> ${booking.otherRequest}</p>
+      <div style="text-align: start; font-size: 14px;">
+          <b style="text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px double #000;">TH Global Travel</b>
+          <p>Hotline:<a href='tel:+84946707266'>+84946707266</a></p>
+          <p>Email: <a href='mailto:info@thglobaltravel.com'>info@thglobaltravel.com</a></p>
+          <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
+      </div>
+    </div>
+  </div>
 `;
 }
