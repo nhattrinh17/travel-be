@@ -1,78 +1,154 @@
 <html lang='en'>
 
-  <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <style>
-      body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #fff; } .container { width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px; } .header { text-align: center; padding-bottom: 20px; } .header h1 { font-size: 24px; color: #333333; } .info, .booking-details, .footer { margin-bottom: 20px; } .info p, .booking-details p, .footer p { font-size: 16px; color: #555555; margin: 5px 0; } .booking-details h2 { font-size: 20px; color: #333333; margin-bottom: 10px; } .footer { text-align: start; font-size: 14px; } .footer b { padding-bottom: 4px; border-bottom: 1px double #000; } .footer a { color: #007bff; text-decoration: none; } .footer a:hover {
-      text-decoration: underline; } .room-details { margin-bottom: 20px; } .data-transfer p, .other-services p, .room-details p { margin-left: 20px; }
-    </style>
-  </head>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+    }
 
-  <body>
-    <div class='container'>
-      <div class='header'>
-        <h1>TH Global Travel</h1>
-      </div>
-      <div class='info'>
-        <p><strong>Dear </strong> {{fullName}},</p>
-        <p>Thank you for reaching out to TH Global Travel with your recent enquiry. We are delighted to assist you in planning your upcoming trip and provide you with all the necessary details for a memorable travel experience.
-        </p>
-        <p>Based on the information provided, here are the details of the requested cruise</p>
-        <p><strong>Email:</strong> {{email}}</p>
-        <p><strong>Phone:</strong> {{phone}}</p>
-        <p><strong>Country:</strong> {{country}}</p>
-        <p><strong>Travel Dates:</strong> {{date}}</p>
-      </div>
-      <div class='booking-details'>
-        <h2>{{cruiseName}}</h2>
-        <p><strong>Itineraries:</strong> {{typeItineraries}}</p>
-        <p><strong>Total Rooms:</strong> {{totalRoom}}</p>
-        {{#each dataRoomSelect}}
-          <div class='room-details'>
-            <h3>Room {{indexRoom}}:</h3>
-            <p><strong>Room style:</strong> {{nameRoom}}</p>
-            <p><strong>Total Adults:</strong> {{adult}}</p>
-            <p><strong>Total Children:</strong> {{child}}</p>
-            <p><strong>Total Infants:</strong> {{infant}}</p>
-            <p><strong>Price:</strong> {{price}}</p>
-          </div>
-        {{/each}}
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+    }
 
-        {{#if otherServices}}
-          <div class='other-services'>
-            <h3>Other Services:</h3>
-            {{#each otherServices}}
-              <p><strong>Service Name:</strong> {{name}}</p>
-              <p><strong>Adults:</strong> {{default adult 0}}</p>
-              <p><strong>Children:</strong> {{default child 0}}</p>
-              <p><strong>Infants:</strong> {{default infant 0}}</p>
-              <div style='display: flex; align-items: center;'><p><strong>Description:</strong></p> {{{description}}}</div>
-              <p><strong>Time:</strong> {{default time '8:00'}}</p>
-            {{/each}}
-          </div>
-        {{/if}}
-        {{#if dataTransfer}}
-          <div class='data-transfer'>
-            <h3>Transfer:</h3>
-            <p><strong>Name:</strong> {{dataTransfer.name}}</p>
-            <p><strong>Address:</strong> {{default dataTransfer.address ''}}</p>
-          </div>
-        {{/if}}
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+    }
 
-        <p><strong>Total Price After Discount Applied :</strong> {{calculateTotalPrice dataRoomSelect otherServices dataTransfer}}</p>
-        <p>Please note that the availability of your requested tour package is subject to confirmation by our sales team. Once we verify the availability, we will promptly inform you and proceed with the booking process.</p>
-        <p>If you have any specific preferences or additional requirements, please let us know so that we can tailor the tour to meet your needs. Our goal is to ensure you have a seamless and enjoyable travel experience with TH Global Travel.</p>
-        <p>Thank you once again for choosing TH Global Travel. We look forward to making your travel dreams a reality.</p>
-        <p>Best regards,</p>
-      </div>
-      <div class='footer'>
-        <b style='text-transform: uppercase;'>TH Global Travel</b>
-        <p>Hotline:<a href='tel:+84946707266'>+84946707266</a></p>
-        <p>Email: <a href='mailto:info@thglobaltravel.com'>info@thglobaltravel.com</a></p>
-        <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
-      </div>
+    .header h1 {
+      font-size: 24px;
+      color: #333333;
+    }
+
+    .info,
+    .booking-details,
+    .footer {
+      margin-bottom: 20px;
+    }
+
+    .info p,
+    .booking-details p,
+    .footer p {
+      font-size: 16px;
+      color: #555555;
+      margin: 5px 0;
+    }
+
+    .booking-details h2 {
+      font-size: 20px;
+      color: #333333;
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      text-align: start;
+      font-size: 14px;
+    }
+
+    .footer b {
+      padding-bottom: 4px;
+      border-bottom: 1px double #000;
+    }
+
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .room-details {
+      margin-bottom: 20px;
+    }
+
+    .data-transfer p,
+    .other-services p,
+    .room-details p {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class='container'>
+    <div class='header'>
+      <h1>TH Global Travel</h1>
     </div>
-  </body>
+    <div class='info'>
+      <p><strong>Dear </strong> {{fullName}},</p>
+      <p>Thank you for reaching out to TH Global Travel with your recent enquiry. We are delighted to assist you in
+        planning your upcoming trip and provide you with all the necessary details for a memorable travel experience.
+      </p>
+      <p>Based on the information provided, here are the details of the requested cruise</p>
+      <p><strong>Email:</strong> {{email}}</p>
+      <p><strong>Phone:</strong> {{phone}}</p>
+      <p><strong>Country:</strong> {{country}}</p>
+      <p><strong>Travel Dates:</strong> {{date}}</p>
+    </div>
+    <div class='booking-details'>
+      <h2>{{cruiseName}}</h2>
+      <p><strong>Itineraries:</strong> {{typeItineraries}}</p>
+      <p><strong>Total Rooms:</strong> {{totalRoom}}</p>
+      {{#each dataRoomSelect}}
+      <div class='room-details'>
+        <h3>Room {{indexRoom}}:</h3>
+        <p><strong>Room style:</strong> {{nameRoom}}</p>
+        <p><strong>Total Adults:</strong> {{adult}}</p>
+        <p><strong>Total Children:</strong> {{child}}</p>
+        <p><strong>Total Infants:</strong> {{infant}}</p>
+        <p><strong>Price:</strong> {{price}}</p>
+      </div>
+      {{/each}}
+      {{#unless (isObjectEmpty otherServices)}}
+      <div class='other-services'>
+        <h3>Other Services:</h3>
+        {{#each otherServices}}
+        <p><strong>Service Name:</strong> {{name}}</p>
+        <p><strong>Adults:</strong> {{default adult 0}}</p>
+        <p><strong>Children:</strong> {{default child 0}}</p>
+        <p><strong>Infants:</strong> {{default infant 0}}</p>
+        <div style='display: flex; align-items: center;'>
+          <p><strong>Description:</strong></p> {{{description}}}
+        </div>
+        <p><strong>Time:</strong> {{default time '8:00'}}</p>
+        {{/each}}
+      </div>
+      {{/if}}
+      {{#unless (isObjectEmpty dataTransfer)}}
+      <div class='data-transfer'>
+        <h3>Transfer:</h3>
+        <p><strong>Name:</strong> {{dataTransfer.name}}</p>
+        <p><strong>Address:</strong> {{default dataTransfer.address ''}}</p>
+      </div>
+      {{/unless}}
+
+      <p><strong>Total Price After Discount Applied :</strong> {{calculateTotalPrice dataRoomSelect otherServices
+        dataTransfer}}</p>
+      <p>Please note that the availability of your requested tour package is subject to confirmation by our sales team.
+        Once we verify the availability, we will promptly inform you and proceed with the booking process.</p>
+      <p>If you have any specific preferences or additional requirements, please let us know so that we can tailor the
+        tour to meet your needs. Our goal is to ensure you have a seamless and enjoyable travel experience with TH
+        Global Travel.</p>
+      <p>Thank you once again for choosing TH Global Travel. We look forward to making your travel dreams a reality.</p>
+      <p>Best regards,</p>
+    </div>
+    <div class='footer'>
+      <b style='text-transform: uppercase;'>TH Global Travel</b>
+      <p>Hotline:<a href='tel:+84946707266'>+84946707266</a></p>
+      <p>Email: <a href='mailto:info@thglobaltravel.com'>info@thglobaltravel.com</a></p>
+      <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
+    </div>
+  </div>
+</body>
 
 </html>

@@ -36,4 +36,12 @@ export function registerHelpers() {
     const discountedPrice = totalPrice - totalPrice * discount * 0.01;
     return Math.floor(discountedPrice);
   });
+  // Check if an object is empty
+  Handlebars.registerHelper('isObjectEmpty', function (obj) {
+    return Object.keys(obj).length === 0;
+  });
+  // Check if an object is empty
+  Handlebars.registerHelper('isArrayEmpty', function (arr) {
+    return arr.length === 0;
+  });
 }
