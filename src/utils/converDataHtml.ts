@@ -8,7 +8,7 @@ export function generateBookingCruiseHTML(booking: BookingCruiseDto, cruiseName:
     <div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
       <div style="width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px">
         <div style="padding-bottom: 20px;">
-          <h1 style="font-size: 24px; color: #333333;">GLOBAL Travel</h1>
+          <h1 style="font-size: 24px; color: #333333;">TH Global Travel</h1>
         </div>
         <div style="margin-bottom: 20px; text-align: left;">
           <p style="font-size: 16px; color: #555555; margin: 5px 0;"><strong>Full Name:</strong> ${fullName}</p>
@@ -76,7 +76,7 @@ export function generateBookingTourHtml(booking: BookingTourDto): string {
   <div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
     <div style="width: 80%; margin: 0 auto; background-color: #ffffff; padding: 20px;">
       <div style="padding-bottom: 20px;">
-        <h1 style="font-size: 24px; color: #333333;">GLOBAL Travel</h1>
+        <h1 style="font-size: 24px; color: #333333;">TH Global Travel</h1>
       </div>
       <p><strong>Name:</strong> ${booking.fullName}</p>
       <p><strong>Email:</strong> ${booking.email}</p>
