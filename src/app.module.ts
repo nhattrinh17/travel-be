@@ -73,7 +73,8 @@ import { registerHelpers } from './templates/handlebars-helpers';
         transport: {
           host: process.env.MAIL_HOST,
           port: +process.env.MAIL_PORT,
-          service: 'Gmail',
+          // service: 'Gmail',
+          service: 'STMP',
           secure: true,
           auth: {
             user: process.env.MAIL_USER,
@@ -82,6 +83,7 @@ import { registerHelpers } from './templates/handlebars-helpers';
           tls: {
             // do not fail on invalid certs
             rejectUnauthorized: false,
+            // ciphers: "SSLv3"
           },
         },
         defaults: {
