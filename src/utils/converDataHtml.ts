@@ -64,7 +64,7 @@ export function generateBookingCruiseHTML(booking: BookingCruiseDto, cruiseName:
           <b style="text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px double #000;">TH Global Travel</b>
           <p>Hotline:<a href='tel:+84946707266'>+84946707266</a></p>
           <p>Email: <a href='mailto:info@thglobaltravel.com'>info@thglobaltravel.com</a></p>
-          <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
+          <p>Website: <a href='https://thglobaltravel.com/'>thglobaltravel.com</a></p>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export function generateBookingTourHtml(booking: BookingTourDto): string {
           <b style="text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px double #000;">TH Global Travel</b>
           <p>Hotline:<a href='tel:+84946707266'>+84946707266</a></p>
           <p>Email: <a href='mailto:info@thglobaltravel.com'>info@thglobaltravel.com</a></p>
-          <p>Website: <a href='http://www.abc.com'>www.abc.com</a></p>
+          <p>Website: <a href='https://thglobaltravel.com/'>thglobaltravel.com</a></p>
       </div>
     </div>
   </div>
