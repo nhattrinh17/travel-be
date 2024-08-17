@@ -16,7 +16,7 @@ export class OtherServiceBookingModel extends Model {
   name: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT,
   })
   description: string;
 

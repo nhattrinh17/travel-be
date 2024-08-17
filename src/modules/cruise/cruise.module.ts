@@ -12,10 +12,12 @@ import { ServiceBookingModule } from '../service-booking/service-booking.module'
 import { BookingCruiseRepository } from './repository/booking.repository';
 import { SendMailService } from 'src/send-mail/send-mail.service';
 import { DetailLocationModule } from '../detail-location/detail-location.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     //
+    UsersModule,
     DetailLocationModule,
     ServiceBookingModule,
     AccompaniedServiceModule,

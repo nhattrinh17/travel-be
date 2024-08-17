@@ -10,7 +10,9 @@ export function registerHelpers() {
       dataTransfer,
     ) {
       let totalPrice = 0;
+      let totalPerson = 0;
       dataRoomSelect.forEach((room) => {
+        totalPerson += room.adult + room.child + room.infant;
         totalPrice += room.price * (room.adult + room.child + room.infant);
       });
       // console.log('🚀 ~ dataRoomSelect.forEach ~ totalPrice:1', totalPrice);
@@ -22,7 +24,7 @@ export function registerHelpers() {
       }
       // console.log('🚀 ~ dataRoomSelect.forEach ~ totalPrice:2', totalPrice);
       if (dataTransfer) {
-        totalPrice += dataTransfer.price || 0;
+        totalPrice += dataTransfer.price * totalPerson || 0;
       }
       // console.log('🚀 ~ dataRoomSelect.forEach ~ totalPrice:3', totalPrice);
       return Math.floor(totalPrice);

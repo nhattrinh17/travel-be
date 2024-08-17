@@ -47,6 +47,15 @@ export class UsersService {
     );
   }
 
+  async checkExitAndCreate(dto: CreateUserDto) {
+    const checkExit = await this.userRepository.findOneByCondition({
+      [Op.or]: [{ email: dto.email }, { phone: dto.phone }],
+    });
+    if (!checkExit) {
+      return this.create(dto);
+    }
+  }
+
   findOne(id: number) {
     return this.userRepository.findOneById(id, ['id', 'email', 'username', 'name', 'phone', 'status', 'avatar']);
   }

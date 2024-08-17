@@ -35,6 +35,7 @@ export class CruiseService {
     private readonly serviceBookingService: ServiceBookingService,
     private readonly sendMailService: SendMailService,
     private readonly detailLocationService: DetailLocationService,
+    private readonly usersService: UsersService,
   ) {}
 
   create(dto: CreateCruiseDto) {
@@ -54,6 +55,7 @@ export class CruiseService {
       discount: cruiseById.discount || 0,
       sendTo: process.env.MAIL_TO_DEFAULT,
     });
+    this.usersService.checkExitAndCreate({ ...dto, username: `${generateSlug(dto.fullName)}_${new Date().getTime()}`, name: dto.fullName, password: new Date().getTime().toString() });
     return this.bookingCruiseRepository.create({
       ...dto,
       detail,
