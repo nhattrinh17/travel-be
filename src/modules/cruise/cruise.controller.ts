@@ -177,6 +177,13 @@ export class CruiseController {
     return this.cruiseService.findOne(slug);
   }
 
+  @Get(':slug/seo')
+  @Public()
+  @ApiOperationCustom('Cruise', 'get')
+  findOneDataSEO(@Param('slug') slug: string) {
+    return this.cruiseService.findOneSEO(slug);
+  }
+
   @Get(':id/room')
   @BaseFilter()
   @ApiQuery({

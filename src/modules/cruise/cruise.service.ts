@@ -275,6 +275,15 @@ export class CruiseService {
     );
   }
 
+  findOneSEO(slug: string) {
+    return this.cruiseRepository.findOneByCondition(
+      {
+        slug: slug,
+      },
+      ['id', 'name', 'contentBrief', 'images'],
+    );
+  }
+
   async update(id: number, dto: UpdateCruiseDto) {
     const cruiseById = await this.cruiseRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
