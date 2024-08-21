@@ -140,7 +140,7 @@ export class TourController {
     return this.tourService.findAllBookingTour(pagination, sort, typeSort);
   }
 
-  @Get('slug')
+  @Get(':slug')
   @Public()
   @ApiQuery({
     name: 'name',
@@ -149,6 +149,13 @@ export class TourController {
   @ApiOperationCustom('Tour', 'get')
   findOne(@Query('name') slug: string) {
     return this.tourService.findOne(slug);
+  }
+
+  @Get(':slug/seo')
+  @Public()
+  @ApiOperationCustom('Cruise', 'get')
+  findOneDataSEO(@Param('slug') slug: string) {
+    return this.tourService.findOneSEO(slug);
   }
 
   @Get(':id/itineraries')

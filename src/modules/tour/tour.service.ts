@@ -190,6 +190,15 @@ export class TourService {
     );
   }
 
+  findOneSEO(slug: string) {
+    return this.tourRepository.findOneByCondition(
+      {
+        slug: slug,
+      },
+      ['id', 'name', 'contentBrief', 'images'],
+    );
+  }
+
   async getAllItinerariesCruise(idTour: number) {
     return this.itinerariesService.findAll(
       {
