@@ -25,6 +25,7 @@ import { PacketTourModule } from './modules/packet-tour/packet-tour.module';
 import { ServiceBookingModule } from './modules/service-booking/service-booking.module';
 import { ReviewModule } from './modules/review/review.module';
 import { registerHelpers } from './templates/handlebars-helpers';
+import { BlogCategoryModule } from './modules/blog-category/blog-category.module';
 
 @Module({
   imports: [
@@ -110,6 +111,7 @@ import { registerHelpers } from './templates/handlebars-helpers';
     CruiseModule,
     ServiceBookingModule,
     ReviewModule,
+    BlogCategoryModule,
   ],
   controllers: [AppController],
   providers: [
