@@ -21,6 +21,7 @@ export * from './bookingTour.model';
 export * from './review.model';
 export * from './cruiseDetailLocation';
 export * from './blogCategory.model';
+export * from './blog.model';
 
 export const addConditionNotDelete = (options: any) => {
   if (!options.where) {

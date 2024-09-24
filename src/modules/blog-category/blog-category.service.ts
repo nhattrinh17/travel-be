@@ -23,7 +23,7 @@ export class BlogCategoryService {
 
   findAll(pagination: PaginationDto) {
     const filter = {};
-    return this.blogCategoryRepository.findAll(filter, { ...pagination });
+    return this.blogCategoryRepository.findAll(filter, { ...pagination, projection: ['id', 'name', 'description', 'image', 'createdAt'] });
   }
 
   findOne(id: number) {
@@ -36,7 +36,7 @@ export class BlogCategoryService {
     const slug = generateSlug(dto.name);
     const checkDuplicate = await this.blogCategoryRepository.findOneByCondition({ slug, id: { [Op.ne]: id } });
     if (checkDuplicate) throw new Error(messageResponse.system.duplicateData);
-    return this.blogCategoryRepository.findByIdAndUpdate(id, dto);
+    return this.blogCategoryRepository.findByIdAndUpdate(id, { ...dto, slug });
   }
 
   remove(id: number) {

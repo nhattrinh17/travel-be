@@ -26,6 +26,7 @@ import { ServiceBookingModule } from './modules/service-booking/service-booking.
 import { ReviewModule } from './modules/review/review.module';
 import { registerHelpers } from './templates/handlebars-helpers';
 import { BlogCategoryModule } from './modules/blog-category/blog-category.module';
+import { BlogModule } from './modules/blog/blog.module';
 
 @Module({
   imports: [
@@ -112,6 +113,7 @@ import { BlogCategoryModule } from './modules/blog-category/blog-category.module
     ServiceBookingModule,
     ReviewModule,
     BlogCategoryModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [

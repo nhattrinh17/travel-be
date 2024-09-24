@@ -1,14 +1,23 @@
 import { BeforeCount, BeforeFind, BeforeSave, Column, ForeignKey, BelongsTo, Model, Table, BelongsToMany } from 'sequelize-typescript';
 import { DataType } from 'sequelize-typescript';
-import { addConditionNotDelete } from '.';
+import { addConditionNotDelete, BlogCategoryModel } from '.';
 
 @Table({
-  tableName: 'blogCategory',
+  tableName: 'blog',
   timestamps: true,
 })
-export class BlogCategoryModel extends Model {
+export class BlogModel extends Model {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
+
+  @ForeignKey(() => BlogCategoryModel)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  blogCategoryId: number;
+
+  @BelongsTo(() => BlogCategoryModel)
+  blogCategory: BlogCategoryModel;
 
   @Column({
     type: DataType.STRING,
@@ -29,6 +38,17 @@ export class BlogCategoryModel extends Model {
     type: DataType.TEXT,
   })
   description: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  content: string;
+
+  @Column({
+    type: DataType.INTEGER,
+    defaultValue: 0,
+  })
+  view: number;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isDeleted: boolean;

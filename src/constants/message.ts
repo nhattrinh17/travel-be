@@ -25,4 +25,7 @@ export const messageResponse = {
   accompaniedServiceId: {
     idInvalid: 'accompanied_serviceId_invalid',
   },
+  blog: {
+    blogCategoryNotFound: 'blog_category_not_found',
+  },
 };

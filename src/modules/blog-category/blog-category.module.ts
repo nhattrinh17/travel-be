@@ -15,6 +15,12 @@ import { BlogCategoryRepository } from './repository/blog-category.repository';
       useClass: BlogCategoryRepository,
     },
   ],
-  exports: [BlogCategoryService],
+  exports: [
+    {
+      provide: 'BlogCategoryRepositoryInterface',
+      useClass: BlogCategoryRepository,
+    },
+    BlogCategoryService,
+  ],
 })
 export class BlogCategoryModule {}
