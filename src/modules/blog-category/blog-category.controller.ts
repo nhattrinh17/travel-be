@@ -4,6 +4,7 @@ import { CreateBlogCategoryDto } from './dto/create-blog-category.dto';
 import { UpdateBlogCategoryDto } from './dto/update-blog-category.dto';
 import { ApiOperationCustom, Pagination, PaginationDto } from 'src/custom-decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../auth/decorators';
 
 @ApiTags('Blog Categories')
 @Controller('blog-category')
@@ -17,6 +18,7 @@ export class BlogCategoryController {
   }
 
   @Get()
+  @Public()
   @ApiOperationCustom('Blog Categories', 'get')
   findAll(@Pagination() pagination: PaginationDto) {
     return this.blogCategoryService.findAll(pagination);
