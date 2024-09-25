@@ -34,14 +34,22 @@ export class BlogController {
     name: 'blogCategoryId',
   })
   @ApiOperationCustom('Blog', 'get')
-  findAll(@Pagination() pagination: PaginationDto, @Query('blogCategoryId') blogCategoryId: number) {
-    return this.blogService.findAll(pagination, blogCategoryId);
+  findAll(@Pagination() pagination: PaginationDto, @Query('blogCategoryId') blogCategoryId: number, @Query('sort') sort: string, @Query('typeSort') typeSort: string) {
+    return this.blogService.findAll(pagination, blogCategoryId, sort, typeSort);
   }
 
   @Get(':slug')
+  @Public()
   @ApiOperationCustom('Blog', 'get', true, true)
   findOne(@Param('slug') slug: string) {
     return this.blogService.findOneBySlug(slug);
+  }
+
+  @Get(':slug/seo')
+  @Public()
+  @ApiOperationCustom('Blog', 'get', true, true)
+  getDataSEO(@Param('slug') slug: string) {
+    return this.blogService.findDataSEOBySlug(slug);
   }
 
   @Patch(':id')

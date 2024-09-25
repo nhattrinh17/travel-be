@@ -18,12 +18,12 @@ export class BlogCategoryService {
     const slug = generateSlug(dto.name);
     const checkDuplicate = await this.blogCategoryRepository.findOneByCondition({ slug });
     if (checkDuplicate) throw new Error(messageResponse.system.duplicateData);
-    return this.blogCategoryRepository.create(dto);
+    return this.blogCategoryRepository.create({ ...dto, slug });
   }
 
   findAll(pagination: PaginationDto) {
     const filter = {};
-    return this.blogCategoryRepository.findAll(filter, { ...pagination, projection: ['id', 'name', 'description', 'image', 'createdAt'] });
+    return this.blogCategoryRepository.findAll(filter, { ...pagination, projection: ['id', 'name', 'description', 'image', 'createdAt', 'slug'] });
   }
 
   findOne(id: number) {

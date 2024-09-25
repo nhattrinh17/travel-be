@@ -39,7 +39,7 @@ export class BlogService {
     });
   }
 
-  findAll(pagination: PaginationDto, blogCategoryId: number) {
+  findAll(pagination: PaginationDto, blogCategoryId: number, sort: string, typeSort: string) {
     const filter = {};
     if (blogCategoryId) {
       filter['blogCategoryId'] = blogCategoryId;
@@ -47,6 +47,8 @@ export class BlogService {
     return this.blogRepository.findAll(filter, {
       ...pagination,
       projection: ['name', 'description', 'image', 'slug', 'view'],
+      sort,
+      typeSort,
     });
   }
 
@@ -56,6 +58,10 @@ export class BlogService {
 
   findOneBySlug(slug: string) {
     return this.blogRepository.findOneByCondition({ slug }, ['id', 'name', 'description', 'image', 'content', 'view']);
+  }
+
+  findDataSEOBySlug(slug: string) {
+    return this.blogRepository.findOneByCondition({ slug }, ['name', 'description', 'image']);
   }
 
   async update(id: number, dto: UpdateBlogDto) {

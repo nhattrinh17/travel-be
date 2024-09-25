@@ -94,7 +94,7 @@ export class RoomCruiseModel extends Model {
   maxChildren: number;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT,
   })
   amenities: string;
 
