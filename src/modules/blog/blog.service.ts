@@ -46,7 +46,7 @@ export class BlogService {
     }
     return this.blogRepository.findAll(filter, {
       ...pagination,
-      projection: ['name', 'description', 'image', 'slug', 'view'],
+      projection: ['name', 'description', 'image', 'slug', 'view', 'createdAt'],
       sort,
       typeSort,
     });

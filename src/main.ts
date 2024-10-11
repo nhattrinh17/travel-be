@@ -23,7 +23,7 @@ async function bootstrap() {
 
   app.register(fastyfyMultipart as any, {
     limits: {
-      fileSize: 10 * 1024 * 1024, // Giới hạn kích thước tệp là 100MB
+      fileSize: 50 * 1024 * 1024, // Giới hạn kích thước tệp là 100MB
     },
   });
   // app.register(fastifyCors, {
