@@ -34,6 +34,12 @@ export class DetailLocationController {
     return this.detailLocationService.findOne(+id);
   }
 
+  @Public()
+  @Get(':id/seo')
+  getDataSEO(@Param('id') id: string) {
+    return this.detailLocationService.getDataBrief(id);
+  }
+
   @Patch(':id')
   @ApiOperationCustom('DetailLocation', 'patch')
   async update(@Param('id') id: string, @Body() updateDetailLocationDto: UpdateDetailLocationDto) {

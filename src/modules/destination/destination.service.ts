@@ -46,6 +46,15 @@ export class DestinationService {
     return this.destinationRepository.findOneById(id);
   }
 
+  getDataBrief(slug: string) {
+    return this.destinationRepository.findOneByCondition(
+      {
+        slug: slug,
+      },
+      ['name', 'title', 'image'],
+    );
+  }
+
   async update(id: number, dto: UpdateDestinationDto) {
     const DestinationById = await this.findOne(id);
     if (!DestinationById) throw new Error(messageResponse.system.idInvalid);

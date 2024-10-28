@@ -29,9 +29,10 @@ export class DestinationController {
     return this.destinationService.findAll(pagination, seeDetail);
   }
 
-  @Get(':id')
+  @Public()
+  @Get(':id/seo')
   findOne(@Param('id') id: string) {
-    return this.destinationService.findOne(+id);
+    return this.destinationService.getDataBrief(id);
   }
 
   @Patch(':id')

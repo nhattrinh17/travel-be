@@ -32,7 +32,7 @@ export class DetailLocationService {
   }
 
   async addCruiseDetailLocation(cruiseId: number, detailLocationIds: number[]) {
-    console.log('🚀 ~ DetailLocationService ~ addCruiseDetailLocation ~ detailLocationIds:', detailLocationIds);
+    // console.log('🚀 ~ DetailLocationService ~ addCruiseDetailLocation ~ detailLocationIds:', detailLocationIds);
     const checkSpecialOff = await Promise.all(detailLocationIds.map((id) => this.findOne(id)));
     if (checkSpecialOff.includes(null)) throw Error(messageResponse.accompaniedServiceId.idInvalid);
     return Promise.all(
@@ -56,6 +56,15 @@ export class DetailLocationService {
 
   findOne(id: number) {
     return this.detailLocationRepository.findOneById(id);
+  }
+
+  getDataBrief(slug: string) {
+    return this.detailLocationRepository.findOneByCondition(
+      {
+        slug: slug,
+      },
+      ['name', 'title', 'images'],
+    );
   }
 
   async update(id: number, dto: UpdateDetailLocationDto) {
