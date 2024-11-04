@@ -36,7 +36,12 @@ export class RoomCruiseModel extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  price: number;
+  priceSingle: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  priceDouble: number;
 
   @Column({
     type: DataType.INTEGER,

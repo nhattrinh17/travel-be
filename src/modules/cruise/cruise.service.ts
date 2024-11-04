@@ -125,7 +125,7 @@ export class CruiseService {
         offset: 0,
         page: 1,
 
-        projection: ['id', 'name', 'price', 'notes', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+        projection: ['id', 'name', 'priceDouble', 'priceSingle', 'notes', 'totalRooms', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
       },
     );
   }
@@ -262,8 +262,8 @@ export class CruiseService {
           {
             model: RoomCruiseModel,
             as: 'roomCruises',
-            attributes: ['id', 'name', 'price', 'totalRooms', 'itinerariesId', 'notes', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
-            sort: ['price', 'ASC'],
+            attributes: ['id', 'name', 'priceSingle', 'priceDouble', 'totalRooms', 'itinerariesId', 'notes', 'typeBed', 'isViewOcean', 'acreage', 'location', 'images', 'specialService', 'content', 'maxAdult', 'maxChildren', 'amenities'],
+            sort: ['priceSingle', 'ASC'],
           },
           {
             model: ItinerariesModel,
