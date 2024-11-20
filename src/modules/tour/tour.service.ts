@@ -29,9 +29,11 @@ export class TourService {
     private readonly sendMailService: SendMailService,
   ) {}
 
-  create(dto: CreateTourDto) {
+  async create(dto: CreateTourDto) {
     if (!dto.name || !dto.contentBrief || !dto.detail || !dto.price) throw new Error(messageResponse.system.missingData);
-    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    const slug = generateSlug(dto.name);
+    const checkDuplicate = await this.tourRepository.count({ slug });
+    if (checkDuplicate) throw new Error(messageResponse.system.duplicateData);
     return this.tourRepository.create({ ...dto, slug: slug, type: dto.packetTourId ? TypeTour.Packet : TypeTour.Daily });
   }
 
@@ -218,7 +220,12 @@ export class TourService {
   async update(id: number, dto: UpdateTourDto) {
     const tourById = await this.tourRepository.findOneById(id);
     if (!tourById) throw new Error(messageResponse.system.idInvalid);
-    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    const slug = generateSlug(dto.name || tourById.name);
+    const checkDuplicate = await this.tourRepository.count({
+      slug: slug,
+      id: { [Op.not]: id },
+    });
+    if (checkDuplicate) throw new Error(messageResponse.system.duplicateData);
     if (dto.type == TypeTour.Daily) dto.packetTourId = null;
     return this.tourRepository.findByIdAndUpdate(id, { ...dto, slug });
   }

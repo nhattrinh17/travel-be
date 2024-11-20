@@ -38,9 +38,11 @@ export class CruiseService {
     private readonly usersService: UsersService,
   ) {}
 
-  create(dto: CreateCruiseDto) {
+  async create(dto: CreateCruiseDto) {
     if (!dto.destinationId || !dto.name || !dto.contentBrief || !dto.detail || !dto.images || !dto.price) throw new Error(messageResponse.system.missingData);
-    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    const slug = generateSlug(dto.name);
+    const checkDuplicate = await this.cruiseRepository.count({ slug });
+    if (checkDuplicate) throw new Error(messageResponse.system.duplicateData);
     return this.cruiseRepository.create({ ...dto, slug: slug });
   }
 
@@ -287,7 +289,12 @@ export class CruiseService {
   async update(id: number, dto: UpdateCruiseDto) {
     const cruiseById = await this.cruiseRepository.findOneById(id);
     if (!cruiseById) throw new Error(messageResponse.system.idInvalid);
-    const slug = `${generateSlug(dto.name)}_${new Date().getTime()}`;
+    const slug = generateSlug(dto.name || cruiseById.name);
+    const checkDuplicate = await this.cruiseRepository.count({
+      slug: slug,
+      id: { [Op.not]: id },
+    });
+    if (checkDuplicate) throw new Error(messageResponse.system.duplicateData);
     return this.cruiseRepository.findByIdAndUpdate(id, { ...dto, slug });
   }
 
