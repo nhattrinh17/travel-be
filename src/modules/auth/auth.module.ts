@@ -5,7 +5,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Helper } from 'src/utils';
 import { JwtStrategy } from './strategies';
-import { RedisService } from '../cache/redis.service';
 import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
 

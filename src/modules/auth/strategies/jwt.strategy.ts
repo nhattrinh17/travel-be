@@ -2,7 +2,6 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { Status } from 'src/constants';
-import { RedisService } from '../../cache/redis.service';
 import { UsersService } from 'src/modules/users/users.service';
 
 interface JwtPayload {

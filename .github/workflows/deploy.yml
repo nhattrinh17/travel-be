@@ -29,5 +29,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/be-thglobaltravel:${{ env.TAG }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/be-thglobaltravel:${{ env.TAG }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/be-thglobaltravel:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/be-thglobaltravel:latest
